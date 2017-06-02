@@ -4,4 +4,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="app_intro">Intro Activity</string>
+
+    <!--Phrases-->
+    <string name="intro_phrase_1">Join your friends. Climb the ladder.</string>
+    <string name="welcome_text">Welcome to rankr</string>
+    <string name="sign_in_text">Sign in</string>
+    <string name="create_league_text">Create League</string>
+    <string name="title_activity_intro">IntroActivity</string>
 </resources>
