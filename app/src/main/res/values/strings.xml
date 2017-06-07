@@ -12,4 +12,5 @@
     <string name="create_league_text">Create League</string>
     <string name="title_activity_intro">IntroActivity</string>
     <string name="hint_email">Email address</string>
+    <string name="next_text">Next</string>
 </resources>
