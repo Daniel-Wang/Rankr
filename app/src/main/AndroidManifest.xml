@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateLeagueActivity"></activity>
+        <activity
+            android:name=".CreateLeagueActivity"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

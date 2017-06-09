@@ -3,5 +3,5 @@
     <item android:state_enabled="true"
         android:drawable="@drawable/next_button_normal"/>
     <item android:state_enabled="false"
-        android:drawable=""/>
+        android:drawable="@drawable/next_button_dark"/>
 </selector>

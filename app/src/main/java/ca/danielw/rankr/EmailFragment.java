@@ -44,7 +44,9 @@ public class EmailFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 email = etEmail.getText().toString();
                 if(isValidEmail(email)){
-                    etEmail.setEnabled(false);
+                    nextBtn.setEnabled(true);
+                } else {
+                    nextBtn.setEnabled(false);
                 }
             }
         });
@@ -53,7 +55,10 @@ public class EmailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
                 transaction.replace(R.id.root_frame, new LeagueNameFragment());
+                transaction.addToBackStack("Email");
+                transaction.commit();
             }
         });
 
