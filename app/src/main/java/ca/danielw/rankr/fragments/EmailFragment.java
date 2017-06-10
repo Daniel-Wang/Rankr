@@ -1,4 +1,4 @@
-package ca.danielw.rankr;
+package ca.danielw.rankr.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ca.danielw.rankr.R;
+
 
 public class EmailFragment extends Fragment {
 
-    private static final String TAG = "RootFragment";
+    private static final String TAG = "EmailFragment";
 
     private Button nextBtn;
     private EditText etEmail;
@@ -24,7 +26,7 @@ public class EmailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 		/* Inflate the layout for this fragment */
-        View view = inflater.inflate(R.layout.fragment_email, container, false);
+        View view = inflater.inflate(R.layout.email_fragment, container, false);
 
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etEmail = (EditText) view.findViewById(R.id.etEmail);

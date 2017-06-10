@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.intro_1.*
-import android.support.v4.content.ContextCompat.startActivity
 import android.content.Intent
-
-
+import ca.danielw.rankr.activities.CreateLeagueActivity
+import ca.danielw.rankr.activities.SignInActivity
 
 
 class IntroActivity : AppCompatActivity() {
@@ -21,6 +20,9 @@ class IntroActivity : AppCompatActivity() {
         btnSignIn.setOnClickListener {
             Log.e(TAG, "Sign in")
             //launch the signin flow
+
+            val myIntent = Intent(this@IntroActivity, SignInActivity::class.java)
+            this@IntroActivity.startActivity(myIntent)
         }
 
         btnCreateLeague.setOnClickListener {

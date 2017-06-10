@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ca.danielw.rankr.MainActivity">
+    tools:context="ca.danielw.rankr.activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"

@@ -14,8 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:focusableInTouchMode="true"
-        android:layout_centerInParent="true">
+        android:focusableInTouchMode="true">
 
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="100dp"
@@ -25,10 +24,10 @@
             app:hintTextAppearance="@style/EditText.Label">
 
             <EditText
-                android:id="@+id/etLeagueName"
+                android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/create_league_name_text"
+                android:hint="Username"
                 android:inputType="text"
                 style="@style/EditText.Flow"/>
 
@@ -36,11 +35,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="@string/create_league_summary_text"/>
+            android:text="Username cannot be longer than 20 characters and can only contain letters and numbers."/>
 
     </LinearLayout>
 
