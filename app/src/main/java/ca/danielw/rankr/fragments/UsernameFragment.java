@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.CreateLeagueActivity;
 
 
 public class UsernameFragment extends Fragment{
@@ -19,7 +20,7 @@ public class UsernameFragment extends Fragment{
 
     private Button nextBtn;
     private EditText etUsername;
-    private String leagueName;
+    private String username;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +34,8 @@ public class UsernameFragment extends Fragment{
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CreateLeagueActivity.mUsername = username;
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
                 transaction.replace(R.id.root_frame, new PasswordFragment());
@@ -55,6 +58,8 @@ public class UsernameFragment extends Fragment{
             @Override
             public void afterTextChanged(Editable s) {
                 nextBtn.setEnabled(true);
+
+                username = etUsername.getText().toString();
             }
         });
 

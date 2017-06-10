@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.CreateLeagueActivity;
 
 
 public class EmailFragment extends Fragment {
@@ -56,6 +57,8 @@ public class EmailFragment extends Fragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CreateLeagueActivity.mEmail = email;
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
                 transaction.replace(R.id.root_frame, new LeagueNameFragment());
