@@ -12,12 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.SignInActivity;
 
 public class SignInLeagueNameFragment extends Fragment {
     private static final String TAG = "SignInLeagueNameFragment";
 
     private Button nextBtn;
     private EditText etLeagueName;
+    private String leagueName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,12 +44,15 @@ public class SignInLeagueNameFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 nextBtn.setEnabled(true);
+                leagueName = etLeagueName.getText().toString();
             }
         });
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SignInActivity.mLeagueName = leagueName;
+
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
                 transaction.replace(R.id.root_frame, new SignInEmailFragment());
