@@ -1,5 +1,6 @@
 package ca.danielw.rankr.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
+import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.models.UserModel;
 import ca.danielw.rankr.utils.Constants;
 
@@ -47,8 +49,13 @@ public class PasswordFragment extends Fragment {
             public void onClick(View v) {
                 CreateLeagueActivity.mPassword = password;
 
-                //Start the leaderboard activity
+                //Create the user in the database
                 createUser();
+
+                //Start the leaderboard activity
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+
             }
         });
 
