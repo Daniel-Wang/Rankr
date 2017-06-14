@@ -11,6 +11,7 @@ import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
 import ca.danielw.rankr.fragments.EmailFragment;
+import ca.danielw.rankr.utils.Constants;
 
 public class RootFragment extends Fragment{
 
@@ -29,10 +30,18 @@ public class RootFragment extends Fragment{
 		 * When this container fragment is created, we fill it with our first
 		 * "real" fragment
 		 */
-		if(sourceLocation.equals(CreateLeagueActivity.SOURCE_LOCATION)) {
-            transaction.replace(R.id.root_frame, new EmailFragment());
-        } else {
-            transaction.replace(R.id.root_frame, new SignInLeagueNameFragment());
+		switch(sourceLocation){
+            case Constants.CREATE_LEAGUE_FRAGMENT:
+                transaction.replace(R.id.root_frame, new EmailFragment());
+                break;
+            case Constants.SIGNIN_FRAGMENT:
+                transaction.replace(R.id.root_frame, new SignInLeagueNameFragment());
+                break;
+            case Constants.HOME_FRAGMENT:
+                transaction.replace(R.id.root_frame, new RankingFragment());
+                break;
+            default:
+                break;
         }
 
         transaction.commit();

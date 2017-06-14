@@ -33,9 +33,9 @@ public class IntroActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             //Open to leaderboard
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+//            Intent intent = new Intent(this, MainActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
         }
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {

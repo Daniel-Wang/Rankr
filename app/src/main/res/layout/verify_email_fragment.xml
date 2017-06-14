@@ -16,22 +16,12 @@
         android:orientation="vertical"
         android:focusableInTouchMode="true">
 
-        <android.support.design.widget.TextInputLayout
+        <TextView
             android:layout_marginTop="100dp"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textColorHint="@color/white"
-            app:hintTextAppearance="@style/EditText.Label">
-
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                style="@style/EditText.Flow"/>
-
-        </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:text="Kindly Verify Your Email"
+            style="@style/EditText.Flow"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -39,7 +29,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="We'll warn you to make a strong password but that doesn't stop you from making a crappy one."/>
+            android:text="For your email's sake and for our database's sake, please verify your email address so we know you aren't being impersonated."/>
 
     </LinearLayout>
 
@@ -48,7 +38,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/next_text"
+        android:text="Create League"
         android:enabled="false"
         style="@style/Button.Flow"
         android:layout_alignParentBottom="true"/>

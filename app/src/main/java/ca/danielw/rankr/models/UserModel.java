@@ -6,11 +6,13 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
 
+import ca.danielw.rankr.utils.Constants;
+
 @IgnoreExtraProperties
 public class UserModel {
-    public String email;
-    public String league;
-    public String username;
+    private String email;
+    private String league;
+    private String username;
 
     public UserModel(){
 
@@ -25,8 +27,9 @@ public class UserModel {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("email", email);
-        result.put("username", username);
+        result.put(Constants.NODE_EMAIL, email);
+        result.put(Constants.NODE_USERNAME, username);
+        result.put(Constants.NODE_LEAGUE, league);
 
         return result;
     }

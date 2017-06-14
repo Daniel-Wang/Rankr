@@ -8,11 +8,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
+import ca.danielw.rankr.utils.Constants;
 
 public class SignInActivity extends AppCompatActivity {
-    private static final String SOURCE_LOCATION = "SIGNINACTIVITY";
-
-    public static FirebaseAuth mAuth;
 
     private ViewPager mPager;
     private SlidePagerAdapter mPagerAdapter;
@@ -26,11 +24,9 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        mAuth = FirebaseAuth.getInstance();
-
         /* Instantiate a ViewPager and a PagerAdapter. */
         mPager = (ViewPager) findViewById(R.id.vpPager);
-        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), SOURCE_LOCATION);
+        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SIGNIN_FRAGMENT);
         mPager.setAdapter(mPagerAdapter);
     }
 }
