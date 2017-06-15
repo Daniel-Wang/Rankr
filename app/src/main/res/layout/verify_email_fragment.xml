@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="For your email's sake and for our database's sake, please verify your email address so we know you aren't being impersonated."/>
+            android:text="This may take from a few seconds to a couple minutes."/>
 
     </LinearLayout>
 
