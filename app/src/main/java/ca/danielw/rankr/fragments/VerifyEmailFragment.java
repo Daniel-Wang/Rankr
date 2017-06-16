@@ -124,6 +124,8 @@ public class VerifyEmailFragment extends Fragment {
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey, leagueValues);
+//                                childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueKey, "hello");
+                                mDatabase.child(Constants.NODE_RANKINGS).child(leagueKey).setValue(null);
 
                                 mDatabase.updateChildren(childUpdates);
 

@@ -6,6 +6,10 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="green">#4CB944</color>
     <color name="light_grey">#f9f9f9</color>
     <color name="medium_grey">#d7d7d7</color>
+
+    <color name="purple">#777DA7</color>
+    <color name="purpleDark">#52587f</color>
 </resources>
