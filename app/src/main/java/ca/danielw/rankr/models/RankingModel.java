@@ -6,26 +6,24 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-import ca.danielw.rankr.utils.Constants;
-
 @IgnoreExtraProperties
 public class RankingModel {
-    private String name;
+    private String id;
     private String elo;
 
     public RankingModel() {
 
     }
 
-    public RankingModel(String name, String elo){
-        this.name = name;
+    public RankingModel(String id, String elo){
+        this.id = id;
         this.elo = elo;
     }
 
     @Exclude
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
-        result.put(name, elo);
+        result.put(id, elo);
 
         return result;
     }

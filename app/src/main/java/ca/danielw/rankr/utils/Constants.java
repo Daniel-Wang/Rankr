@@ -22,6 +22,8 @@ public final class Constants {
     public static final String PROFILE_FRAGMENT = "PROFILE_FRAGMENT";
     public static final String SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
 
+    public static final int BASE_RATING = 1200;
+
     private Constants(){
         throw new AssertionError();
     }
