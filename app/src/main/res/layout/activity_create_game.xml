@@ -7,7 +7,7 @@
     android:background="@color/purple"
     android:gravity="center"
     android:padding="@dimen/activity_vertical_margin"
-    tools:context="ca.danielw.rankr.activities.CreateLeagueActivity">
+    tools:context="ca.danielw.rankr.activities.CreateGameActivity">
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:text="Create Game"
         android:enabled="false"
-        style="@style/Button.Flow"
+        style="@style/Button.Flow.Purple"
         android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

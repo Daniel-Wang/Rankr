@@ -111,7 +111,7 @@ public class VerifyEmailFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             //Create the user in the database
-                            Log.e(TAG, String.valueOf(user.isEmailVerified()));
+//                            Log.e(TAG, String.valueOf(user.isEmailVerified()));
 
                             if(user != null && user.isEmailVerified()) {
                                 UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail, leagueKey);

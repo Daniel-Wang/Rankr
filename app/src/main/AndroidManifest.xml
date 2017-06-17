@@ -29,7 +29,7 @@
             android:name=".activities.SignInActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.CreateGameActivity"
-            android:theme="@style/purpleDark"
+            android:windowSoftInputMode="adjustResize"
             android:label="Create a Game"/>
     </application>
 
