@@ -18,10 +18,10 @@ public class UserModel {
 
     }
 
-    public UserModel(String Username, String Email, String leagueId){
+    public UserModel(String Username, String Email, String League){
         email = Email;
         username = Username;
-        league = leagueId;
+        league = League;
     }
 
     @Exclude

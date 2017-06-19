@@ -12,7 +12,6 @@ import ca.danielw.rankr.utils.Constants;
 
 @IgnoreExtraProperties
 public class LeagueModel {
-    private String mName;
     private List<String> mMembers = new ArrayList<>();
     private List<String> mGames = new ArrayList<>();
 
@@ -20,8 +19,7 @@ public class LeagueModel {
 
     }
 
-    public LeagueModel(String name, List<String> members){
-        mName = name;
+    public LeagueModel(List<String> members){
         mMembers = members;
     }
 
@@ -29,7 +27,6 @@ public class LeagueModel {
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put(Constants.NODE_MEMBERS, mMembers);
-        result.put(Constants.NODE_NAME, mName);
         result.put(Constants.NODE_GAMES, mGames);
 
         return result;

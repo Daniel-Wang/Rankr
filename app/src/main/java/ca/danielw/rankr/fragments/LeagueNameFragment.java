@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
@@ -21,6 +22,8 @@ public class LeagueNameFragment extends Fragment {
     private EditText etLeagueName;
     private String leagueName;
 
+    private TextView tvWarning;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class LeagueNameFragment extends Fragment {
 
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
+        tvWarning = (TextView) view.findViewById(R.id.tvWarning);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,9 +60,9 @@ public class LeagueNameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                nextBtn.setEnabled(true);
-
                 leagueName = etLeagueName.getText().toString();
+
+                nextBtn.setEnabled(true);
             }
         });
 

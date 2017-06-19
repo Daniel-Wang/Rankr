@@ -11,6 +11,10 @@ public class RankingModel {
     private String id;
     private String elo;
 
+    private String username;
+    private String prevElo;
+    private int rank;
+
     public RankingModel() {
 
     }
@@ -26,5 +30,25 @@ public class RankingModel {
         result.put(id, elo);
 
         return result;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getElo() {
+        return elo;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPrevElo() {
+        return prevElo;
+    }
+
+    public int getRank(){
+        return rank;
     }
 }

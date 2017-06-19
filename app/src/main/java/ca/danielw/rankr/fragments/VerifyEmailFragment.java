@@ -35,7 +35,6 @@ public class VerifyEmailFragment extends Fragment {
     private static final String TAG = "VerifyEmailFragment";
 
     private Button nextBtn;
-    private String leagueKey;
     private String userId;
 
     private FirebaseAuth mAuth;
@@ -58,39 +57,6 @@ public class VerifyEmailFragment extends Fragment {
                 //Refresh to see if the user has been validated
                 mAuth.signOut();
                 signIn(CreateLeagueActivity.mEmail, CreateLeagueActivity.mPassword);
-
-//                FirebaseUser user = mAuth.getCurrentUser();
-//
-//                //Create the user in the database
-//                Log.e(TAG, String.valueOf(user.isEmailVerified()));
-//
-//                if(user != null && user.isEmailVerified()) {
-//                    UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail, leagueKey);
-//                    LeagueModel leagueModel = new LeagueModel(CreateLeagueActivity.mLeagueName,
-//                            Collections.singletonList(userId));
-//
-//                    Map<String, Object> userValues = userModel.toMap();
-//
-//                    Map<String, Object> childUpdates = new HashMap<>();
-//                    childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
-//                    childUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey, leagueModel);
-//
-//                    mDatabase.updateChildren(childUpdates);
-//
-////                    mDatabase.child(Constants.NODE_LEAGUES).child(leagueKey)
-////                                    .child(Constants.NODE_NAME).setValue(CreateLeagueActivity.mLeagueName);
-////                    //Add this new user to the league
-////                            mDatabase.child(Constants.NODE_LEAGUES).child(leagueKey)
-////                                    .child(Constants.NODE_MEMBERS).child(userId).setValue(true);
-////
-////                    //Create user
-////                            mDatabase.child(Constants.NODE_USERS)
-////                                    .child(userId).setValue(userModel);
-//
-////                    Start the leaderboard activity
-//                  Intent intent = new Intent(getActivity(), MainActivity.class);
-//                  startActivity(intent);
-//                }
             }
         });
 
@@ -114,32 +80,21 @@ public class VerifyEmailFragment extends Fragment {
 //                            Log.e(TAG, String.valueOf(user.isEmailVerified()));
 
                             if(user != null && user.isEmailVerified()) {
-                                UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail, leagueKey);
-                                LeagueModel leagueModel = new LeagueModel(CreateLeagueActivity.mLeagueName,
-                                        Collections.singletonList(userId));
+                                UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail,
+                                        CreateLeagueActivity.mLeagueName);
+                                LeagueModel leagueModel = new LeagueModel(Collections.singletonList(userId));
 
                                 Map<String, Object> userValues = userModel.toMap();
                                 Map<String, Object> leagueValues = leagueModel.toMap();
 
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
-                                childUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey, leagueValues);
-//                                childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueKey, "hello");
-                                mDatabase.child(Constants.NODE_RANKINGS).child(leagueKey).setValue(null);
+                                childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName, leagueValues);
 
                                 mDatabase.updateChildren(childUpdates);
 
-//                    mDatabase.child(Constants.NODE_LEAGUES).child(leagueKey)
-//                                    .child(Constants.NODE_NAME).setValue(CreateLeagueActivity.mLeagueName);
-//                    //Add this new user to the league
-//                            mDatabase.child(Constants.NODE_LEAGUES).child(leagueKey)
-//                                    .child(Constants.NODE_MEMBERS).child(userId).setValue(true);
-//
-//                    //Create user
-//                            mDatabase.child(Constants.NODE_USERS)
-//                                    .child(userId).setValue(userModel);
 
-//                    Start the leaderboard activity
+                                // Start the leaderboard activity
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 startActivity(intent);
                             }
@@ -164,23 +119,9 @@ public class VerifyEmailFragment extends Fragment {
 
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            leagueKey = mDatabase.child(Constants.NODE_LEAGUES)
-                                    .push().getKey();
-
                             sendVerifyEmail(user);
                             nextBtn.setEnabled(true);
                             userId = user.getUid();
-
-                            //Create league
-//                            CreateLeagueActivity.dbRef.child(Constants.NODE_LEAGUES).child(leagueKey)
-//                                    .child(Constants.NODE_NAME).setValue(CreateLeagueActivity.mLeagueName);
-                            //Add this new user to the league
-//                            CreateLeagueActivity.dbRef.child(Constants.NODE_LEAGUES).child(leagueKey)
-//                                    .child(Constants.NODE_MEMBERS).child(userId).setValue(true);
-
-                            //Create user
-//                            CreateLeagueActivity.dbRef.child(Constants.NODE_USERS)
-//                                    .child(userId).setValue(userModel);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(TAG, "createUserWithEmail:failure" + " " + CreateLeagueActivity.mEmail + " " + CreateLeagueActivity.mPassword, task.getException());
