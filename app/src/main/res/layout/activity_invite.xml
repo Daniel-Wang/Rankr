@@ -1,9 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ca.danielw.rankr.activities.InviteActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/inviteTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Invite"
+        android:textSize="26sp"
+        android:padding="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:id="@+id/inviteBlurb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add any friends and coworkers to your league. Send up to 5 invites at a time."
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/inviteTitle"/>
+
+    <LinearLayout
+        android:id="@+id/llEmail1"
+        android:layout_below="@id/inviteBlurb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_corner_border"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/ic_email_black_24dp"
+            android:tint="@color/colorPrimary"/>
+
+        <EditText
+            android:id="@+id/etEmail1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add an email"
+            android:inputType="textEmailAddress"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEmail2"
+        android:layout_below="@id/llEmail1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_corner_border"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/ic_email_black_24dp"
+            android:tint="@color/colorPrimary"/>
+
+        <EditText
+            android:id="@+id/etEmail2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add an email"
+            android:inputType="textEmailAddress"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEmail3"
+        android:layout_below="@id/llEmail2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_corner_border"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/ic_email_black_24dp"
+            android:tint="@color/colorPrimary"/>
+
+        <EditText
+            android:id="@+id/etEmail3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add an email"
+            android:inputType="textEmailAddress"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llEmail4"
+        android:layout_below="@id/llEmail3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_corner_border"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:srcCompat="@drawable/ic_email_black_24dp"
+            android:tint="@color/colorPrimary"/>
+
+        <EditText
+            android:id="@+id/etEmail4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add an email"
+            android:inputType="textEmailAddress"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="Send invites"
+        style="@style/Button.Flow"/>
+
+</RelativeLayout>
