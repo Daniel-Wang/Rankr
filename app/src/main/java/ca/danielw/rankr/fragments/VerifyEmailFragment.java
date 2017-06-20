@@ -25,6 +25,7 @@ import java.util.Map;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
+import ca.danielw.rankr.activities.InviteActivity;
 import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.UserModel;
@@ -95,7 +96,7 @@ public class VerifyEmailFragment extends Fragment {
 
 
                                 // Start the leaderboard activity
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                Intent intent = new Intent(getActivity(), InviteActivity.class);
                                 startActivity(intent);
                             }
 
