@@ -14,7 +14,13 @@ import ca.danielw.rankr.R
 import ca.danielw.rankr.fragments.EmailFragment
 import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import ca.danielw.rankr.utils.Constants
+import ca.danielw.rankr.utils.MailGunConfig
+import android.R.attr.apiKey
+import net.sargue.mailgun.Configuration
+import net.sargue.mailgun.Mail
 
 
 class InviteActivity : AppCompatActivity() {
@@ -48,11 +54,12 @@ class InviteActivity : AppCompatActivity() {
                 val text = et1.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[0] = text
-                    btnSend.isEnabled = true
+                    tvWarning.visibility = View.VISIBLE;
                 } else if(et1.text.isNotBlank()) {
-                    btnSend.isEnabled = false
+                    tvWarning.visibility = View.GONE;
                     emails[0] = null
                 }
+                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -68,11 +75,12 @@ class InviteActivity : AppCompatActivity() {
                 val text = et2.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[1] = text
-                    btnSend.isEnabled = true
-                } else if(et2.text.isNotBlank()) {
-                    btnSend.isEnabled = false
+                    tvWarning.visibility = View.VISIBLE;
+                } else if(et1.text.isNotBlank()) {
+                    tvWarning.visibility = View.GONE;
                     emails[1] = null
                 }
+                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -88,11 +96,12 @@ class InviteActivity : AppCompatActivity() {
                 val text = et3.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[2] = text
-                    btnSend.isEnabled = true
-                } else if(et3.text.isNotBlank()) {
-                    btnSend.isEnabled = false
+                    tvWarning.visibility = View.VISIBLE;
+                } else if(et1.text.isNotBlank()) {
+                    tvWarning.visibility = View.GONE;
                     emails[2] = null
                 }
+                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -108,11 +117,12 @@ class InviteActivity : AppCompatActivity() {
                 val text = et4.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[3] = text
-                    btnSend.isEnabled = true
-                } else if(et4.text.isNotBlank()) {
-                    btnSend.isEnabled = false
+                    tvWarning.visibility = View.VISIBLE;
+                } else if(et1.text.isNotBlank()) {
+                    tvWarning.visibility = View.GONE;
                     emails[3] = null
                 }
+                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -126,6 +136,18 @@ class InviteActivity : AppCompatActivity() {
     }
 
     private fun sendEmails(mutableList: MutableList<String?>){
-        for (item in mutableList) Log.e("Emails Sent", item)
+        val configuration = Configuration()
+                .domain(Constants.DOMAIN_NAME)
+                .apiKey(Constants.API_KEY)
+                .from("Team Rankr", Constants.FROM_DOMAIN)
+
+        for (item in mutableList){
+            Mail.using(configuration)
+                    .to(item)
+                    .subject("Invitation to a Rankr League")
+                    .text("Hey there, you've been invited to this rankr league")
+                    .build()
+                    .send()
+        }
     }
 }

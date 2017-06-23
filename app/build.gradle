@@ -41,6 +41,11 @@ dependencies {
     //Tests
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    //For Mailgun
+    compile ('net.sargue:mailgun:1.4.0', {
+        exclude group: 'org.glassfish.hk2.external', module: 'javax.inject'
+    })
 }
 repositories {
     mavenCentral()

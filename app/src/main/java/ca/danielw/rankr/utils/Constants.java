@@ -24,6 +24,10 @@ public final class Constants {
 
     public static final int BASE_RATING = 1200;
 
+    public static final String DOMAIN_NAME = "mail.danielw.ca";
+    public static final String API_KEY = "key-181e8242f9bfaf5d0726ce4770e37963";
+    public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
+
     private Constants(){
         throw new AssertionError();
     }
