@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="This may take from a few seconds to a couple minutes."/>
+            android:text="An email has been sent to you. Please give us up to 1 minute to get this over with."/>
 
     </LinearLayout>
 

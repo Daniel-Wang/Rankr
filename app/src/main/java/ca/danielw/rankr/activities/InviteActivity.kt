@@ -1,29 +1,24 @@
 package ca.danielw.rankr.activities
 
+import android.app.Activity
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
 import ca.danielw.rankr.R
 import ca.danielw.rankr.fragments.EmailFragment
-import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import ca.danielw.rankr.utils.Constants
-import ca.danielw.rankr.utils.MailGunConfig
-import android.R.attr.apiKey
 import net.sargue.mailgun.Configuration
 import net.sargue.mailgun.Mail
 
 
-class InviteActivity : AppCompatActivity() {
+class InviteActivity : Activity() {
 
     var emails = mutableListOf<String?>(null, null, null, null)
 
@@ -54,12 +49,13 @@ class InviteActivity : AppCompatActivity() {
                 val text = et1.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[0] = text
-                    tvWarning.visibility = View.VISIBLE;
+                    tvWarning.visibility = View.GONE
+                    btnSend.isEnabled = true
                 } else if(et1.text.isNotBlank()) {
-                    tvWarning.visibility = View.GONE;
+                    tvWarning.visibility = View.VISIBLE
                     emails[0] = null
+                    btnSend.isEnabled = false
                 }
-                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -75,12 +71,13 @@ class InviteActivity : AppCompatActivity() {
                 val text = et2.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[1] = text
-                    tvWarning.visibility = View.VISIBLE;
-                } else if(et1.text.isNotBlank()) {
                     tvWarning.visibility = View.GONE;
+                    btnSend.isEnabled = true
+                } else if(et2.text.isNotBlank()) {
+                    tvWarning.visibility = View.VISIBLE;
                     emails[1] = null
+                    btnSend.isEnabled = false
                 }
-                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -96,12 +93,13 @@ class InviteActivity : AppCompatActivity() {
                 val text = et3.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[2] = text
-                    tvWarning.visibility = View.VISIBLE;
-                } else if(et1.text.isNotBlank()) {
-                    tvWarning.visibility = View.GONE;
+                    tvWarning.visibility = View.GONE
+                    btnSend.isEnabled = true
+                } else if(et3.text.isNotBlank()) {
+                    tvWarning.visibility = View.VISIBLE
                     emails[2] = null
+                    btnSend.isEnabled = false
                 }
-                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
@@ -117,18 +115,20 @@ class InviteActivity : AppCompatActivity() {
                 val text = et4.text.toString()
                 if(EmailFragment.isValidEmail(text)){
                     emails[3] = text
-                    tvWarning.visibility = View.VISIBLE;
-                } else if(et1.text.isNotBlank()) {
-                    tvWarning.visibility = View.GONE;
+                    tvWarning.visibility = View.GONE
+                    btnSend.isEnabled = true
+                } else if(et4.text.isNotBlank()) {
+                    tvWarning.visibility = View.VISIBLE
                     emails[3] = null
+                    btnSend.isEnabled = false
                 }
-                btnSend.isEnabled = !btnSend.isEnabled;
             }
 
         })
 
         btnSend.setOnClickListener {
             emails = emails.filter { it != null }.toMutableList()
+            Log.e("hi", "1")
             if(emails.isNotEmpty()){
                 sendEmails(emails)
             }
@@ -141,7 +141,9 @@ class InviteActivity : AppCompatActivity() {
                 .apiKey(Constants.API_KEY)
                 .from("Team Rankr", Constants.FROM_DOMAIN)
 
+        Log.e("inside", "send emails")
         for (item in mutableList){
+            Log.e("Yo invites", item)
             Mail.using(configuration)
                     .to(item)
                     .subject("Invitation to a Rankr League")
