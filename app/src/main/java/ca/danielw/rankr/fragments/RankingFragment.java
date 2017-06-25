@@ -16,7 +16,7 @@ import ca.danielw.rankr.models.RankingModel;
 
 public class RankingFragment extends Fragment{
 
-    ArrayList<RankingModel> rankings;
+    ArrayList<RankingModel> rankings = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +29,12 @@ public class RankingFragment extends Fragment{
         // Get the rankings
 
         // Calculate the position differential from the previous day
+        RankingModel model1 = new RankingModel();
+        model1.setElo("2000");
+        model1.setRank(1);
+        model1.setUsername("dwang");
+
+        rankings.add(model1);
 
         RankingAdapter adapter = new RankingAdapter(getContext(), rankings);
 

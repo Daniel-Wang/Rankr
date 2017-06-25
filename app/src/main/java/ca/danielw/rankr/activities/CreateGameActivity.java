@@ -101,7 +101,7 @@ public class CreateGameActivity extends AppCompatActivity {
                                     Map<String, Object> childUpdates = new HashMap<>();
 
                                     childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueKey
-                                    + "/" + name, rankingValues);
+                                    + "/" + name + "/" + userId, rankingValues);
                                     childUpdates.put(Constants.NODE_USERS + "/" + userId + "/"
                                     + Constants.NODE_GAMES + "/" + name, Constants.BASE_RATING);
 

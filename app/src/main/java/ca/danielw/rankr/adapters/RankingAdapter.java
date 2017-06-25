@@ -69,7 +69,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
 
         // Set item views based on your views and data model
         TextView rank = holder.tvRank;
-        rank.setText(ranking.getRank());
+        rank.setText(String.valueOf(ranking.getRank()));
 
         TextView username = holder.tvUsername;
         username.setText(ranking.getUsername());
