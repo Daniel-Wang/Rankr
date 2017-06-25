@@ -1,13 +1,12 @@
 package ca.danielw.rankr.activities
 
 import android.app.Activity
-import android.content.Context
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -16,17 +15,24 @@ import ca.danielw.rankr.fragments.EmailFragment
 import ca.danielw.rankr.utils.Constants
 import net.sargue.mailgun.Configuration
 import net.sargue.mailgun.Mail
+import net.sargue.mailgun.content.Body
 
 
 class InviteActivity : Activity() {
 
     var emails = mutableListOf<String?>(null, null, null, null)
+    var mLeagueName = ""
+    var mEmail = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite)
 
+        mLeagueName = intent.getStringExtra(Constants.LEAGUE_NAME)
+        mEmail = intent.getStringExtra(Constants.EMAIL)
+
         val btnSend = findViewById(R.id.btnSend) as Button
+        val btnSkip = findViewById(R.id.btnSkip) as Button
 
         val tvWarning = findViewById(R.id.tvWarning) as TextView
 
@@ -34,9 +40,6 @@ class InviteActivity : Activity() {
         val et2 = findViewById(R.id.etEmail2) as EditText
         val et3 = findViewById(R.id.etEmail3) as EditText
         val et4 = findViewById(R.id.etEmail4) as EditText
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(et1, InputMethodManager.SHOW_IMPLICIT)
 
         et1.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -126,12 +129,20 @@ class InviteActivity : Activity() {
 
         })
 
+        btnSkip.setOnClickListener {
+            val intent = Intent(this@InviteActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         btnSend.setOnClickListener {
             emails = emails.filter { it != null }.toMutableList()
-            Log.e("hi", "1")
             if(emails.isNotEmpty()){
                 sendEmails(emails)
             }
+            val intent = Intent(this@InviteActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -139,17 +150,44 @@ class InviteActivity : Activity() {
         val configuration = Configuration()
                 .domain(Constants.DOMAIN_NAME)
                 .apiKey(Constants.API_KEY)
-                .from("Team Rankr", Constants.FROM_DOMAIN)
+                .from("Rankr", Constants.FROM_DOMAIN)
 
-        Log.e("inside", "send emails")
+        val body = Body.builder()
+                .h1("Join " + mLeagueName + " on Rankr")
+                .br()
+                .p(mEmail + " has invited you to join the Rankr league " + mLeagueName + ". Join now to start playing!")
+                .br()
+                .link("", "Join Now")
+                .br()
+                .br()
+                .p("Make by the Rankr team (Daniel Wang)")
+                .p("Ottawa/Waterloo/Toronto, ON")
+                .build();
+
         for (item in mutableList){
-            Log.e("Yo invites", item)
+            if (item != null) {
+                SendEmailTask(configuration, item, body).execute()
+            }
+        }
+    }
+
+    private class SendEmailTask (val configuration: Configuration, val item: String, val body: Body): AsyncTask<Unit, Unit, Unit>(){
+
+        override fun doInBackground(vararg params: Unit?) {
             Mail.using(configuration)
                     .to(item)
-                    .subject("Invitation to a Rankr League")
-                    .text("Hey there, you've been invited to this rankr league")
+                    .subject("You've been invited to join a Rankr League")
+                    .content(body)
                     .build()
                     .send()
         }
+
+    }
+
+    override fun onBackPressed() {
+
+        finish()
+        val intent = Intent(this@InviteActivity, MainActivity::class.java)
+        startActivity(intent)
     }
 }

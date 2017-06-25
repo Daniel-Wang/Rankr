@@ -22,7 +22,7 @@
             android:id="@+id/inviteBlurb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add any friends and coworkers to your league. Send up to 4 invites at a time."
+            android:text="Add any friends and coworkers to your league. Send up to 4 invites for now, you'll be able to add more later."
             android:padding="@dimen/activity_horizontal_margin"/>
 
         <LinearLayout
@@ -32,7 +32,8 @@
             android:orientation="horizontal"
             android:background="@drawable/rounded_corner_border"
             android:padding="@dimen/activity_horizontal_margin"
-            android:layout_margin="4dp">
+            android:layout_margin="4dp"
+            android:focusable="true">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -138,15 +139,39 @@
             android:text="You have an invalid email address."
             android:visibility="gone"/>
 
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:text="Send invites"
-            style="@style/Button.Flow"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <Button
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:id="@+id/btnSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Skip"
+                style="@style/Button.InviteActivity"/>
+
+            <Button
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:id="@+id/btnSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:text="Send invites"
+                android:enabled="false"
+                style="@style/Button.InviteActivity"/>
+
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

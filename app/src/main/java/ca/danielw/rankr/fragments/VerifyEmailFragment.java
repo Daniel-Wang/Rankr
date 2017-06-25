@@ -97,6 +97,9 @@ public class VerifyEmailFragment extends Fragment {
 
                                 // Start the leaderboard activity
                                 Intent intent = new Intent(getActivity(), InviteActivity.class);
+                                intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                                intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
+
                                 startActivity(intent);
                             }
 

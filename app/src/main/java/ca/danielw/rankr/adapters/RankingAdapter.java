@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.danielw.rankr.R;
@@ -40,7 +41,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         }
     }
 
-    private List<RankingModel> mRankings;
+    private List<RankingModel> mRankings = new ArrayList<>();
     private Context mContext;
 
     public RankingAdapter(Context context, List<RankingModel> rankingModel){

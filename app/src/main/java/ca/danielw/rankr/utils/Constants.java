@@ -2,6 +2,9 @@ package ca.danielw.rankr.utils;
 
 public final class Constants {
 
+    public static final String LEAGUE_NAME = "LEAGUE_NAME";
+    public static final String EMAIL = "EMAIL";
+
     public static final String NODE_LEAGUES = "leagues";
     public static final String NODE_NAME = "name";
     public static final String NODE_MEMBERS = "members";
