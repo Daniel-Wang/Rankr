@@ -39,6 +39,8 @@ public class SignInPasswordFragment extends Fragment{
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.sign_in_password_fragment, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
+
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
 

@@ -35,10 +35,25 @@ public class RootFragment extends Fragment{
                 transaction.replace(R.id.root_frame, new EmailFragment());
                 break;
             case Constants.SIGNIN_FRAGMENT:
-                transaction.replace(R.id.root_frame, new SignInLeagueNameFragment());
+                Bundle bundle1 = new Bundle();
+                Fragment fragment1 = new SignInLeagueNameFragment();
+
+                bundle1.putString(Constants.SIGN_IN_INTENT, Constants.SIGNIN_FRAGMENT);
+                fragment1.setArguments(bundle1);
+
+                transaction.replace(R.id.root_frame, fragment1);
                 break;
             case Constants.HOME_FRAGMENT:
                 transaction.replace(R.id.root_frame, new RankingFragment());
+                break;
+            case Constants.SIGNUP_FRAGMENT:
+                Bundle bundle2 = new Bundle();
+                Fragment fragment2 = new SignInLeagueNameFragment();
+
+                bundle2.putString(Constants.SIGN_IN_INTENT, Constants.SIGNUP_FRAGMENT);
+                fragment2.setArguments(bundle2);
+
+                transaction.replace(R.id.root_frame, fragment2);
                 break;
             default:
                 break;

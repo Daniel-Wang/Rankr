@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
+import ca.danielw.rankr.activities.SignUpActivity;
+import ca.danielw.rankr.utils.Constants;
 
 
 public class UsernameFragment extends Fragment{
@@ -22,11 +24,18 @@ public class UsernameFragment extends Fragment{
     private EditText etUsername;
     private String username;
 
+    private String INTENT = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.username_fragment, container, false);
+
+        Bundle args = getArguments();
+        if(args != null){
+            INTENT = (String) args.get(Constants.SIGN_IN_INTENT);
+        }
 
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etUsername = (EditText) view.findViewById(R.id.etUsername);
@@ -34,11 +43,26 @@ public class UsernameFragment extends Fragment{
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateLeagueActivity.mUsername = username;
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-                transaction.replace(R.id.root_frame, new PasswordFragment());
+
+                if(INTENT != null){
+                    SignUpActivity.mUsername = username;
+                    Bundle bundle = new Bundle();
+                    Fragment fragment = new EmailFragment();
+
+                    bundle.putString(Constants.SIGN_IN_INTENT, Constants.SIGNUP_FRAGMENT);
+                    fragment.setArguments(bundle);
+
+                    transaction.replace(R.id.root_frame, fragment);
+
+                } else {
+                    CreateLeagueActivity.mUsername = username;
+                    transaction.replace(R.id.root_frame, new PasswordFragment());
+
+                }
+
                 transaction.addToBackStack("Username");
                 transaction.commit();
             }

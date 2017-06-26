@@ -13,9 +13,12 @@ import android.widget.EditText;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.SignInActivity;
+import ca.danielw.rankr.activities.SignUpActivity;
+import ca.danielw.rankr.utils.Constants;
 
 public class SignInLeagueNameFragment extends Fragment {
     private static final String TAG = "SignInLeagueNameFragment";
+    private String INTENT = null;
 
     private Button nextBtn;
     private EditText etLeagueName;
@@ -27,6 +30,10 @@ public class SignInLeagueNameFragment extends Fragment {
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.sign_in_league_name_fragment, container, false);
 
+        Bundle args = getArguments();
+        if(args != null){
+            INTENT = (String) args.get(Constants.SIGN_IN_INTENT);
+        }
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
 
@@ -51,16 +58,33 @@ public class SignInLeagueNameFragment extends Fragment {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SignInActivity.mLeagueName = leagueName;
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-                transaction.replace(R.id.root_frame, new SignInEmailFragment());
+                if(INTENT == null){
+                    SignInActivity.mLeagueName = leagueName;
+                    Bundle bundle = new Bundle();
+                    Fragment fragment = new SignInEmailFragment();
+
+                    bundle.putString(Constants.SIGN_IN_INTENT, Constants.SIGNIN_FRAGMENT);
+                    fragment.setArguments(bundle);
+
+                    transaction.replace(R.id.root_frame, fragment);
+                } else {
+                    SignUpActivity.mLeagueName = leagueName;
+                    Bundle bundle = new Bundle();
+                    Fragment fragment = new UsernameFragment();
+
+                    bundle.putString(Constants.SIGN_IN_INTENT, Constants.SIGNUP_FRAGMENT);
+                    fragment.setArguments(bundle);
+
+                    transaction.replace(R.id.root_frame, fragment);
+                }
+
                 transaction.addToBackStack("Sign In League Name");
                 transaction.commit();
             }
         });
-
 
         return view;
     }
