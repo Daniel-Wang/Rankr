@@ -34,6 +34,8 @@ public class LeagueNameFragment extends Fragment {
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
         tvWarning = (TextView) view.findViewById(R.id.tvWarning);
 
+        etLeagueName.requestFocus();
+
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

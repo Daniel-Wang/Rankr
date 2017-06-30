@@ -37,6 +37,8 @@ public class SignInLeagueNameFragment extends Fragment {
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
 
+        etLeagueName.requestFocus();
+
         etLeagueName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

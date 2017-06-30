@@ -27,6 +27,7 @@ import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.activities.InviteActivity;
 import ca.danielw.rankr.activities.MainActivity;
+import ca.danielw.rankr.activities.SignUpActivity;
 import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.UserModel;
 import ca.danielw.rankr.utils.Constants;
@@ -90,7 +91,8 @@ public class VerifyEmailFragment extends Fragment {
 
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
-                                childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName, leagueValues);
+                                childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName + "/"
+                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, true);
 
                                 mDatabase.updateChildren(childUpdates);
 

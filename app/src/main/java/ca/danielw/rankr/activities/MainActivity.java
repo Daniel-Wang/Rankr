@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,26 +64,29 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 //        final String leagueKey;
 
+        Log.e("MainActivity", currentUser.getUid());
         mDatabase.child(Constants.NODE_USERS).child(currentUser.getUid())
                 .child(Constants.NODE_LEAGUE).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String leagueKey = (String) dataSnapshot.getValue();
 
-                mDatabase.child(Constants.NODE_RANKINGS).child(leagueKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue() == null){
-                            Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
-                            startActivity(intent);
+                if (leagueKey != null) {
+                    mDatabase.child(Constants.NODE_RANKINGS).child(leagueKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.getChildren() == null){
+                                Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
+                                startActivity(intent);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
 
             @Override

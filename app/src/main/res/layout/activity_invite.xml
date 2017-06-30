@@ -32,7 +32,9 @@
             android:orientation="horizontal"
             android:background="@drawable/rounded_corner_border"
             android:padding="@dimen/activity_horizontal_margin"
-            android:layout_margin="4dp">
+            android:layout_margin="4dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -47,9 +49,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/add_an_email_hint"
                 android:inputType="textEmailAddress"
-                android:textCursorDrawable="@null"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:textCursorDrawable="@null" />
 
         </LinearLayout>
 

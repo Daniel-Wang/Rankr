@@ -93,7 +93,7 @@ public class CreateGameActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                                    String userId = (String) postSnapshot.getValue();
+                                    String userId = postSnapshot.getKey();
                                     RankingModel rankingModel = new RankingModel(userId,
                                             Integer.toString(Constants.BASE_RATING));
 

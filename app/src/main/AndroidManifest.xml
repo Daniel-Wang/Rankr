@@ -33,7 +33,8 @@
             android:label="Create a Game"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activities.InviteActivity" />
-        <activity android:name=".activities.SignUpActivity" />
+        <activity android:name=".activities.SignUpActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
