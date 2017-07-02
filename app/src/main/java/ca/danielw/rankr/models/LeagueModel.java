@@ -12,8 +12,11 @@ import ca.danielw.rankr.utils.Constants;
 
 @IgnoreExtraProperties
 public class LeagueModel {
+    private String mLeaguename;
     private List<String> mMembers = new ArrayList<>();
     private List<String> mGames = new ArrayList<>();
+
+    private ArrayList<RankingModel> mRankings = new ArrayList<>();
 
     public LeagueModel(){
 
@@ -30,5 +33,37 @@ public class LeagueModel {
         result.put(Constants.NODE_GAMES, mGames);
 
         return result;
+    }
+
+    public String getmLeaguename() {
+        return mLeaguename;
+    }
+
+    public void setmLeaguename(String mLeaguename) {
+        this.mLeaguename = mLeaguename;
+    }
+
+    public List<String> getmMembers() {
+        return mMembers;
+    }
+
+    public void setmMembers(List<String> mMembers) {
+        this.mMembers = mMembers;
+    }
+
+    public List<String> getmGames() {
+        return mGames;
+    }
+
+    public void setmGames(List<String> mGames) {
+        this.mGames = mGames;
+    }
+
+    public ArrayList<RankingModel> getmRankings() {
+        return mRankings;
+    }
+
+    public void setmRankings(ArrayList<RankingModel> mRankings) {
+        this.mRankings = mRankings;
     }
 }

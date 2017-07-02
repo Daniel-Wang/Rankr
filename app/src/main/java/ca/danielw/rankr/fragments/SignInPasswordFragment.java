@@ -1,6 +1,8 @@
 package ca.danielw.rankr.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,11 +20,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.activities.SignInActivity;
+import ca.danielw.rankr.utils.Constants;
 
 public class SignInPasswordFragment extends Fragment{
     private static final String TAG = "SignInPasswordFragment";
@@ -82,6 +85,11 @@ public class SignInPasswordFragment extends Fragment{
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                            editor.commit();
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             Intent intent = new Intent(getActivity(), MainActivity.class);

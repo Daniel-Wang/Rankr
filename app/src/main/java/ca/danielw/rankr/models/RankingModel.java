@@ -14,16 +14,17 @@ public class RankingModel {
     private String elo;
 
     private String username;
-    private String prevElo;
+    private String prevEloRank;
     private int rank;
 
     public RankingModel() {
 
     }
 
-    public RankingModel(String id, String elo){
+    public RankingModel(String id, String elo, String username){
         this.id = id;
         this.elo = elo;
+        this.username = username;
     }
 
     public String getId() {
@@ -38,8 +39,8 @@ public class RankingModel {
         return username;
     }
 
-    public String getPrevElo() {
-        return prevElo;
+    public String getPrevEloRank() {
+        return prevEloRank;
     }
 
     public int getRank(){
@@ -58,8 +59,8 @@ public class RankingModel {
         this.username = username;
     }
 
-    public void setPrevElo(String prevElo) {
-        this.prevElo = prevElo;
+    public void setPrevEloRank(String prevEloRank) {
+        this.prevEloRank = prevEloRank;
     }
 
     public void setRank(int rank) {
@@ -70,7 +71,8 @@ public class RankingModel {
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
         result.put(Constants.NODE_ELO, elo);
-        result.put(Constants.NODE_PREV, elo);
+        result.put(Constants.NODE_PREV, prevEloRank);
+        result.put(Constants.NODE_USERNAME, username);
 
         return result;
     }

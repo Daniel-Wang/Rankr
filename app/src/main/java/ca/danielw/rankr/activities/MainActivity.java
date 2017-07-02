@@ -1,6 +1,8 @@
 package ca.danielw.rankr.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +25,8 @@ import ca.danielw.rankr.adapters.SlidePagerAdapter;
 import ca.danielw.rankr.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
+
+    private String mLeagueName;
 
     private ViewPager mPager;
     private SlidePagerAdapter mPagerAdapter;
@@ -65,27 +70,57 @@ public class MainActivity extends AppCompatActivity {
 //        final String leagueKey;
 
         Log.e("MainActivity", currentUser.getUid());
-        mDatabase.child(Constants.NODE_USERS).child(currentUser.getUid())
-                .child(Constants.NODE_LEAGUE).addListenerForSingleValueEvent(new ValueEventListener() {
+
+        //Get this user's League and check if a game exists, if not, then start the create game activity
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        mLeagueName = sharedPref.getString(Constants.LEAGUE_NAME, null);
+
+        Log.e("MainActivity", mLeagueName);
+
+        if (mLeagueName != null) {
+            updateUI();
+        } else {
+            mDatabase.child(Constants.NODE_USERS).child(currentUser.getUid())
+                    .child(Constants.NODE_LEAGUE).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mLeagueName = (String) dataSnapshot.getValue();
+
+                    SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(Constants.LEAGUE_NAME, mLeagueName);
+                    editor.commit();
+
+                    updateUI();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public String getmLeagueName() {
+        return mLeagueName;
+    }
+
+    private void updateUI(){
+        mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String leagueKey = (String) dataSnapshot.getValue();
+                Log.e("mainActivity", String.valueOf(dataSnapshot.exists()));
+                if (dataSnapshot.exists()) {
+                    BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-                if (leagueKey != null) {
-                    mDatabase.child(Constants.NODE_RANKINGS).child(leagueKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.getChildren() == null){
-                                Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    mPager = (ViewPager) findViewById(R.id.vpPager);
+                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
+                    mPager.setAdapter(mPagerAdapter);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
+                    startActivity(intent);
                 }
             }
 
@@ -94,21 +129,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-//        Log.e("League key", leagueKey);
-//        Log.e("Value retrieved", mDatabase.child(Constants.NODE_RANKINGS).orderByChild(leagueKey).toString());
-
-//        if(mDatabase.child(Constants.NODE_RANKINGS).orderByChild(leagueKey) == null){
-//            Intent intent = new Intent(this, CreateGameActivity.class);
-//            startActivity(intent);
-//        }
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        mPager = (ViewPager) findViewById(R.id.vpPager);
-        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
-        mPager.setAdapter(mPagerAdapter);
     }
-
 }

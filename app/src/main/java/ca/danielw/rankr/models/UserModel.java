@@ -33,4 +33,8 @@ public class UserModel {
 
         return result;
     }
+
+    public String getUsername() {
+        return username;
+    }
 }

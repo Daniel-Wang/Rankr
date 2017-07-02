@@ -24,7 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +31,6 @@ import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.activities.InviteActivity;
 import ca.danielw.rankr.activities.SignUpActivity;
-import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.UserModel;
 import ca.danielw.rankr.utils.Constants;
 
@@ -136,7 +134,7 @@ public class PasswordFragment extends Fragment {
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + SignUpActivity.mLeagueName + "/"
-                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, true);
+                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
 
                                 mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                                     @Override

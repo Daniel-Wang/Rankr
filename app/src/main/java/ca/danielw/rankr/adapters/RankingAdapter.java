@@ -2,18 +2,13 @@ package ca.danielw.rankr.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.RankingModel;
 
 public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHolder> {
@@ -41,11 +36,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         }
     }
 
-    private List<RankingModel> mRankings = new ArrayList<>();
+    private LeagueModel mLeagueModel = new LeagueModel();
     private Context mContext;
 
-    public RankingAdapter(Context context, List<RankingModel> rankingModel){
-        mRankings = rankingModel;
+    public RankingAdapter(Context context, LeagueModel leagueModel){
+        mLeagueModel = leagueModel;
         mContext = context;
     }
 
@@ -65,7 +60,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        RankingModel ranking = mRankings.get(position);
+        RankingModel ranking = mLeagueModel.getmRankings().get(position);
 
         // Set item views based on your views and data model
         TextView rank = holder.tvRank;
@@ -80,7 +75,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return mRankings.size();
+        return mLeagueModel.getmRankings().size();
     }
 
 }

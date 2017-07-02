@@ -1,6 +1,8 @@
 package ca.danielw.rankr.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -26,8 +28,6 @@ import java.util.Map;
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.activities.InviteActivity;
-import ca.danielw.rankr.activities.MainActivity;
-import ca.danielw.rankr.activities.SignUpActivity;
 import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.UserModel;
 import ca.danielw.rankr.utils.Constants;
@@ -79,25 +79,28 @@ public class VerifyEmailFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             //Create the user in the database
-//                            Log.e(TAG, String.valueOf(user.isEmailVerified()));
 
                             if(user != null && user.isEmailVerified()) {
+                                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                                Log.e("Verify", CreateLeagueActivity.mLeagueName);
+                                editor.commit();
+
                                 UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail,
                                         CreateLeagueActivity.mLeagueName);
-                                LeagueModel leagueModel = new LeagueModel(Collections.singletonList(userId));
 
                                 Map<String, Object> userValues = userModel.toMap();
-                                Map<String, Object> leagueValues = leagueModel.toMap();
 
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName + "/"
-                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, true);
+                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
 
                                 mDatabase.updateChildren(childUpdates);
 
 
-                                // Start the leaderboard activity
+                                // Start the invite activity
                                 Intent intent = new Intent(getActivity(), InviteActivity.class);
                                 intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
                                 intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
