@@ -1,6 +1,8 @@
 package ca.danielw.rankr.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -121,6 +123,12 @@ public class PasswordFragment extends Fragment {
                             mDatabase = FirebaseDatabase.getInstance().getReference();
 
                             if (user != null) {
+                                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
+                                Log.e("Verify", SignUpActivity.mLeagueName);
+                                editor.commit();
+
                                 userId = user.getUid();
                                 UserModel userModel = new UserModel(SignUpActivity.mUsername, SignUpActivity.mEmail,
                                         SignUpActivity.mLeagueName);
