@@ -1,6 +1,7 @@
 package ca.danielw.rankr.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ public class RankingFragment extends Fragment{
 
     private DatabaseReference mDatabase;
     private TextView tvGameTitle;
+    private FloatingActionButton mFabRecordGame;
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
 
@@ -40,12 +42,20 @@ public class RankingFragment extends Fragment{
 
         final RecyclerView rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         tvGameTitle = (TextView) view.findViewById(R.id.tvGameTitle);
+        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // Get the rankings
         String leagueName = ((MainActivity)getActivity()).getmLeagueName();
         Log.e("Ranking Fragment", leagueName);
+
+        mFabRecordGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         mDatabase.child(Constants.NODE_RANKINGS).child(leagueName)
                 .addValueEventListener(new ValueEventListener() {
