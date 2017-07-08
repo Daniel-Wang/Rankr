@@ -16,4 +16,7 @@
     <string name="create_league_name_text">Name your rankr league</string>
     <string name="create_league_summary_text">We\'ll use this to name your Rankr league. You won\'t be able to change this later.</string>
     <string name="add_an_email_hint">Add an email</string>
+    <string name="win">Win</string>
+    <string name="lose">Lose</string>
+    <string name="select_opponent">Select Your Opponent</string>
 </resources>

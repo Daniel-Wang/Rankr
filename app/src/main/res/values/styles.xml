@@ -47,8 +47,6 @@
         <item name="android:paddingRight">40dp</item>
     </style>
 
-    <!--TODO add padding between label and cursor-->
-    <!--TODO Show hint when there is no text-->
     <style name="EditText.Flow" parent="@android:style/Widget.EditText">
         <item name="android:textSize">26sp</item>
         <item name="android:maxLines">1</item>

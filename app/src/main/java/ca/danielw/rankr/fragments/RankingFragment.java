@@ -1,5 +1,6 @@
 package ca.danielw.rankr.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.EnterGameResultActivity;
 import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.adapters.RankingAdapter;
 import ca.danielw.rankr.models.LeagueModel;
@@ -33,6 +35,8 @@ public class RankingFragment extends Fragment{
     private FloatingActionButton mFabRecordGame;
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
+
+    private int mCurrentLeague = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +57,27 @@ public class RankingFragment extends Fragment{
         mFabRecordGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
+                LeagueModel leagueModel = leagues.get(mCurrentLeague);
+                String[] usernameList = new String[leagueModel.getmRankings().size()];
+
+                //Generate an arraylist of usernames
+                int counter = 0;
+                for(RankingModel model : leagueModel.getmRankings()){
+                    usernameList[counter] = model.getUsername();
+                    counter++;
+                }
+
+                //Start the activity
+                Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
+                intent.putExtra(Constants.LEAGUE_NAME, leagueModel.getmLeaguename());
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArray(Constants.NODE_USERNAME, usernameList);
+
+                intent.putExtras(bundle);
+
+                startActivity(intent);
             }
         });
 
@@ -62,16 +86,16 @@ public class RankingFragment extends Fragment{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            Log.e("Ranking ftrag", snapshot.getKey());
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.exists()));
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildrenCount()));
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
+//                            Log.e("Ranking ftrag", snapshot.getKey());
+//                            Log.e("Ranking ftrag", String.valueOf(snapshot.exists()));
+//                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildrenCount()));
+//                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
 
                             LeagueModel leagueModel = new LeagueModel();
                             leagueModel.setmLeaguename(snapshot.getKey());
 
                             for(DataSnapshot members: snapshot.getChildren()){
-                                Log.e("Ranking ftrag", members.getKey());
+//                                Log.e("Ranking ftrag", members.getKey());
 
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
                                 leagueModel.getmRankings().add(rankingModel);
@@ -79,7 +103,7 @@ public class RankingFragment extends Fragment{
                             leagues.add(leagueModel);
                         }
 
-                        tvGameTitle.setText(leagues.get(0).getmLeaguename());
+                        tvGameTitle.setText(leagues.get(mCurrentLeague).getmLeaguename());
 
                         RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(0));
 
@@ -94,14 +118,6 @@ public class RankingFragment extends Fragment{
                     }
                 });
         // Calculate the position differential from the previous day
-//        RankingModel model1 = new RankingModel();
-//        model1.setElo("2000");
-//        model1.setRank(1);
-//        model1.setUsername("dwang");
-
-//        rankings.add(model1);
-
-
 
         return view;
     }
