@@ -3,6 +3,7 @@ package ca.danielw.rankr.models;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
 import ca.danielw.rankr.utils.Constants;
 
 @IgnoreExtraProperties
-public class LeagueModel {
+public class LeagueModel implements Serializable{
     private String mLeaguename;
     private List<String> mMembers = new ArrayList<>();
     private List<String> mGames = new ArrayList<>();

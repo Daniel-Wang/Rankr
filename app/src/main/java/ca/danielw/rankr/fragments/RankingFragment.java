@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +40,8 @@ public class RankingFragment extends Fragment{
 
     private int mCurrentLeague = 0;
 
+    private RankingModel mCurrentUser;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class RankingFragment extends Fragment{
         mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         // Get the rankings
         String leagueName = ((MainActivity)getActivity()).getmLeagueName();
@@ -59,21 +64,13 @@ public class RankingFragment extends Fragment{
             public void onClick(View v) {
 
                 LeagueModel leagueModel = leagues.get(mCurrentLeague);
-                String[] usernameList = new String[leagueModel.getmRankings().size()];
-
-                //Generate an arraylist of usernames
-                int counter = 0;
-                for(RankingModel model : leagueModel.getmRankings()){
-                    usernameList[counter] = model.getUsername();
-                    counter++;
-                }
 
                 //Start the activity
                 Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
-                intent.putExtra(Constants.LEAGUE_NAME, leagueModel.getmLeaguename());
 
                 Bundle bundle = new Bundle();
-                bundle.putStringArray(Constants.NODE_USERNAME, usernameList);
+                bundle.putSerializable(Constants.NODE_USERS, leagueModel);
+                bundle.putSerializable(Constants.ME_USER, mCurrentUser);
 
                 intent.putExtras(bundle);
 
@@ -98,7 +95,13 @@ public class RankingFragment extends Fragment{
 //                                Log.e("Ranking ftrag", members.getKey());
 
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
-                                leagueModel.getmRankings().add(rankingModel);
+                                String userId = members.getKey();
+                                if(!userId.equals(user.getUid())) {
+                                    rankingModel.setId(members.getKey());
+                                    leagueModel.getmRankings().add(rankingModel);
+                                } else {
+                                    mCurrentUser = rankingModel;
+                                }
                             }
                             leagues.add(leagueModel);
                         }

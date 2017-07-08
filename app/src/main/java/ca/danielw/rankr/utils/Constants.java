@@ -34,6 +34,8 @@ public final class Constants {
     public static final String API_KEY = "key-181e8242f9bfaf5d0726ce4770e37963";
     public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
 
+    public static final String ME_USER = "ME_USER";
+
     private Constants(){
         throw new AssertionError();
     }

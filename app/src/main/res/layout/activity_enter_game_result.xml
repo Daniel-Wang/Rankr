@@ -20,7 +20,7 @@
                 android:padding="@dimen/activity_horizontal_margin"/>
 
             <android.support.v7.app.AlertController.RecycleListView
-                android:id="@+id/rvChoosePlayer"
+                android:id="@+id/rvUsernames"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -46,7 +46,8 @@
             android:textColor="@color/white"
             android:background="@color/red"
             android:paddingTop="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_horizontal_margin"/>
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:clickable="true"/>
 
         <TextView
             android:gravity="center"
@@ -59,7 +60,8 @@
             android:textColor="@color/white"
             android:background="@color/green"
             android:paddingTop="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_horizontal_margin"/>
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:clickable="true"/>
 
     </LinearLayout>
 </RelativeLayout>
