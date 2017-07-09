@@ -36,7 +36,7 @@ public class RankingFragment extends Fragment{
     private TextView tvGameTitle;
     private FloatingActionButton mFabRecordGame;
 
-    ArrayList<LeagueModel> leagues = new ArrayList<>();
+    ArrayList<LeagueModel> leagues;
 
     private int mCurrentLeague = 0;
 

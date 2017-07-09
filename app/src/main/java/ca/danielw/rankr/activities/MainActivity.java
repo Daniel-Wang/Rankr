@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//        final String leagueKey;
 
         Log.e("MainActivity", currentUser.getUid());
 

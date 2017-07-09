@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,10 @@ public class SignInLeagueNameFragment extends Fragment {
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-                if(INTENT == null){
+
+                Log.e("Intent", INTENT);
+
+                if(INTENT.equals(Constants.SIGNIN_FRAGMENT)){
                     SignInActivity.mLeagueName = leagueName;
                     Bundle bundle = new Bundle();
                     Fragment fragment = new SignInEmailFragment();

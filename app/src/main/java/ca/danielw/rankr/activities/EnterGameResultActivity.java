@@ -8,22 +8,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.UsernameAdapter;
 import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
+import ca.danielw.rankr.utils.Elo;
 import rx.Observer;
 
 public class EnterGameResultActivity extends AppCompatActivity {
 
-    private String mLeagueName;
-
     private TextView mWin;
     private TextView mLose;
 
-    private boolean mResultWin;
+    private boolean mResult;
     private RankingModel mCurrentUser;
+    private RankingModel mOpponent;
+
     private LeagueModel mLeague;
 
     @Override
@@ -60,15 +67,15 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
             @Override
             public void onNext(RankingModel rankingModel) {
-
+                mOpponent = rankingModel;
             }
         });
 
         mWin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mResultWin = true;
-                calculateElo();
+                mResult = true;
+                Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 finish();
             }
@@ -77,21 +84,37 @@ public class EnterGameResultActivity extends AppCompatActivity {
         mLose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mResultWin = false;
-                calculateElo();
+                mResult = false;
+                Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 finish();
             }
         });
     }
 
-    // Update this users and mSelectedUsername user's elo
-    private void calculateElo() {
-
-    }
-
     //Make database call to update the elo
     private void updateRankings() {
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
+        String leagueName = mLeague.getmLeaguename();
+        String currentUserId = mCurrentUser.getId();
+        String currentUsername = mCurrentUser.getUsername();
+
+        String oppUserId = mOpponent.getId();
+        String oppUsername = mOpponent.getUsername();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+
+        childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueName
+                + "/" + currentUsername + "/" + currentUserId, mCurrentUser);
+        childUpdates.put(Constants.NODE_USERS + "/" + currentUserId + "/"
+                + Constants.NODE_GAMES + "/" + currentUsername, Constants.BASE_RATING);
+
+        childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueName
+                + "/" + oppUsername + "/" + oppUserId, mOpponent);
+        childUpdates.put(Constants.NODE_USERS + "/" + oppUserId + "/"
+                + Constants.NODE_GAMES + "/" + oppUsername, Constants.BASE_RATING);
+
+        db.updateChildren(childUpdates);
     }
 }

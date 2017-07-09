@@ -96,7 +96,7 @@ public class CreateGameActivity extends AppCompatActivity {
                                     String userId = postSnapshot.getKey();
 
                                     RankingModel rankingModel = new RankingModel(userId,
-                                            Integer.toString(Constants.BASE_RATING), (String) postSnapshot.getValue());
+                                            Constants.BASE_RATING, (String) postSnapshot.getValue());
 
                                     Map<String, Object> rankingValues = rankingModel.toMap();
                                     Map<String, Object> childUpdates = new HashMap<>();

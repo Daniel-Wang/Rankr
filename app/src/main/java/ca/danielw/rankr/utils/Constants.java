@@ -35,6 +35,7 @@ public final class Constants {
     public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
 
     public static final String ME_USER = "ME_USER";
+    public static final String K_FACTOR = "k_factor";
 
     private Constants(){
         throw new AssertionError();
