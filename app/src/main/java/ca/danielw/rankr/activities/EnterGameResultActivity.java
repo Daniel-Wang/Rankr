@@ -77,6 +77,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 mResult = true;
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
+                //Show animation
                 finish();
             }
         });
@@ -87,6 +88,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 mResult = false;
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
+                //Show animation
                 finish();
             }
         });
@@ -103,6 +105,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
         String oppUserId = mOpponent.getId();
         String oppUsername = mOpponent.getUsername();
 
+        kFactorUpdate(mCurrentUser);
+        kFactorUpdate(mOpponent);
+
         Map<String, Object> childUpdates = new HashMap<>();
 
         childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueName
@@ -116,5 +121,11 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 + Constants.NODE_GAMES + "/" + oppUsername, Constants.BASE_RATING);
 
         db.updateChildren(childUpdates);
+    }
+
+    private void kFactorUpdate(RankingModel model) {
+        if(model.getElo() > Constants.MASTER_ELO) {
+            model.setkFactor(Constants.MASTER_KFACTOR);
+        }
     }
 }

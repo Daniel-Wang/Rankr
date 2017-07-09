@@ -18,16 +18,38 @@ public class RankingModel implements Serializable{
     private String prevEloRank;
 
     private int rank;
-    private int kFactor = 32;
+    private int kFactor;
+
+    private int wins;
+    private int loses;
 
     public RankingModel() {
 
     }
 
-    public RankingModel(String id, int elo, String username){
+    public RankingModel(String id, int elo, String username, int totalGames, int kFactor){
         this.id = id;
         this.elo = elo;
         this.username = username;
+        this.kFactor = kFactor;
+        wins = totalGames;
+        loses = totalGames;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
+
+    public int getLoses() {
+        return loses;
+    }
+
+    public void setLoses(int loses) {
+        this.loses = loses;
     }
 
     public int getElo() {
@@ -70,14 +92,6 @@ public class RankingModel implements Serializable{
         this.username = username;
     }
 
-    public void setPrevEloRank(String prevEloRank) {
-        this.prevEloRank = prevEloRank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
     @Exclude
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
@@ -85,6 +99,8 @@ public class RankingModel implements Serializable{
         result.put(Constants.NODE_PREV, prevEloRank);
         result.put(Constants.NODE_USERNAME, username);
         result.put(Constants.K_FACTOR, kFactor);
+        result.put(Constants.WINS, wins);
+        result.put(Constants.LOSES, loses);
 
         return result;
     }

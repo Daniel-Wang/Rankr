@@ -37,6 +37,13 @@ public final class Constants {
     public static final String ME_USER = "ME_USER";
     public static final String K_FACTOR = "k_factor";
 
+    public static final String LOSES = "loses";
+    public static final String WINS = "wins";
+
+    public static final int KFACTOR = 32;
+    public static final int MASTER_KFACTOR = 16;
+    public static final int MASTER_ELO = 2200;
+
     private Constants(){
         throw new AssertionError();
     }
