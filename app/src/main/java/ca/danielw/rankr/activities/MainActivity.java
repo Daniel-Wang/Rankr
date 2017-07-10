@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mPager;
     private SlidePagerAdapter mPagerAdapter;
 
+    private FloatingActionButton mFab;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -43,14 +46,18 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
                     mPager.setAdapter(mPagerAdapter);
+                    mPagerAdapter.setFab(mFab);
+                    mFab.show();
                     return true;
                 case R.id.navigation_profile:
 //                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.PROFILE_FRAGMENT);
 //                    mPager.setAdapter(mPagerAdapter);
+                    mFab.hide();
                     return true;
                 case R.id.navigation_settings:
 //                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SETTINGS_FRAGMENT);
 //                    mPager.setAdapter(mPagerAdapter);
+                    mFab.hide();
                     return true;
             }
             return false;
@@ -62,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFab = (FloatingActionButton) findViewById(R.id.fabRecordGame);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                     mPager = (ViewPager) findViewById(R.id.vpPager);
                     mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
                     mPager.setAdapter(mPagerAdapter);
+                    mPagerAdapter.setFab(mFab);
                 } else {
                     Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
                     startActivity(intent);

@@ -36,7 +36,7 @@ public class RankingFragment extends Fragment{
     private TextView tvGameTitle;
     private FloatingActionButton mFabRecordGame;
 
-    ArrayList<LeagueModel> leagues;
+    ArrayList<LeagueModel> leagues = new ArrayList<>();
 
     private int mCurrentLeague = 0;
 
@@ -48,9 +48,10 @@ public class RankingFragment extends Fragment{
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.ranking_fragment, container, false);
 
+//        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
+
         final RecyclerView rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         tvGameTitle = (TextView) view.findViewById(R.id.tvGameTitle);
-        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -59,56 +60,37 @@ public class RankingFragment extends Fragment{
         String leagueName = ((MainActivity)getActivity()).getmLeagueName();
         Log.e("Ranking Fragment", leagueName);
 
-        mFabRecordGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                LeagueModel leagueModel = leagues.get(mCurrentLeague);
-
-                //Start the activity
-                Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.NODE_USERS, leagueModel);
-                bundle.putSerializable(Constants.ME_USER, mCurrentUser);
-
-                intent.putExtras(bundle);
-
-                startActivity(intent);
-            }
-        });
-
         mDatabase.child(Constants.NODE_RANKINGS).child(leagueName)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                            Log.e("Ranking ftrag", snapshot.getKey());
-//                            Log.e("Ranking ftrag", String.valueOf(snapshot.exists()));
-//                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildrenCount()));
-//                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
+                            Log.e("Ranking ftrag", snapshot.getKey());
+                            Log.e("Ranking ftrag", String.valueOf(snapshot.exists()));
+                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildrenCount()));
+                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
 
                             LeagueModel leagueModel = new LeagueModel();
                             leagueModel.setmLeaguename(snapshot.getKey());
 
                             for(DataSnapshot members: snapshot.getChildren()){
-//                                Log.e("Ranking ftrag", members.getKey());
+                                Log.e("Ranking ftrag", members.getKey());
 
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
                                 String userId = members.getKey();
-                                if(!userId.equals(user.getUid())) {
-                                    rankingModel.setId(members.getKey());
-                                    leagueModel.getmRankings().add(rankingModel);
-                                } else {
+
+                                if(userId.equals(user.getUid())) {
                                     mCurrentUser = rankingModel;
                                 }
+                                rankingModel.setId(members.getKey());
+                                leagueModel.getmRankings().add(rankingModel);
                             }
                             leagues.add(leagueModel);
                         }
 
                         tvGameTitle.setText(leagues.get(mCurrentLeague).getmLeaguename());
 
-                        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(0));
+                        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
 
                         rvRankings.setAdapter(adapter);
 
@@ -123,5 +105,31 @@ public class RankingFragment extends Fragment{
         // Calculate the position differential from the previous day
 
         return view;
+    }
+
+    public void setFab(FloatingActionButton fab){
+        mFabRecordGame = fab;
+        Log.e("Ranking", String.valueOf(fab));
+        if(mFabRecordGame != null){
+            mFabRecordGame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    LeagueModel leagueModel = leagues.get(mCurrentLeague);
+                    leagueModel.getmRankings().remove(mCurrentUser);
+
+                    //Start the activity
+                    Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constants.NODE_USERS, leagueModel);
+                    bundle.putSerializable(Constants.ME_USER, mCurrentUser);
+
+                    intent.putExtras(bundle);
+
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }

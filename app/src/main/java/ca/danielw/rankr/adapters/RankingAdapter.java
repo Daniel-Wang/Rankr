@@ -70,7 +70,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         username.setText(ranking.getUsername());
 
         TextView elo = holder.tvElo;
-        elo.setText(ranking.getElo());
+        elo.setText(String.valueOf(ranking.getElo()));
     }
 
     @Override

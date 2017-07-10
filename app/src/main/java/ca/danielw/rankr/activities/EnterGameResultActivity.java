@@ -75,6 +75,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mResult = true;
+                mCurrentUser.setWins(mCurrentUser.getWins() + 1);
+                mOpponent.setLoses(mOpponent.getLoses() + 1);
+                
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation
@@ -86,6 +89,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mResult = false;
+                mOpponent.setWins(mOpponent.getWins() + 1);
+                mCurrentUser.setLoses(mCurrentUser.getLoses() + 1);
+
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation

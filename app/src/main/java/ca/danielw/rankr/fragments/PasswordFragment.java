@@ -123,11 +123,7 @@ public class PasswordFragment extends Fragment {
                             mDatabase = FirebaseDatabase.getInstance().getReference();
 
                             if (user != null) {
-                                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
-                                Log.e("Verify", SignUpActivity.mLeagueName);
-                                editor.commit();
+                                addPreferences();
 
                                 userId = user.getUid();
                                 UserModel userModel = new UserModel(SignUpActivity.mUsername, SignUpActivity.mEmail,
@@ -143,6 +139,10 @@ public class PasswordFragment extends Fragment {
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + SignUpActivity.mLeagueName + "/"
                                         + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
+                                // Add default ranking to all rankings
+
+//                                childUpdates.put(Constants.NODE_RANKINGS + "/" + SignUpActivity.mLeagueName
+//                                        + "/" + name + "/" + userId, rankingValues);
 
                                 mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                                     @Override
@@ -155,7 +155,7 @@ public class PasswordFragment extends Fragment {
                                     }
                                 });
 
-                                Log.e("helo", "asd");
+                                Log.e("hello", "asd");
 
                                 // Start the leaderboard activity
                                 Intent intent = new Intent(getActivity(), InviteActivity.class);
@@ -173,5 +173,13 @@ public class PasswordFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void addPreferences(){
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
+        Log.e("Verify", SignUpActivity.mLeagueName);
+        editor.commit();
     }
 }
