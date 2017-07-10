@@ -77,7 +77,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 mResult = true;
                 mCurrentUser.setWins(mCurrentUser.getWins() + 1);
                 mOpponent.setLoses(mOpponent.getLoses() + 1);
-                
+
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation

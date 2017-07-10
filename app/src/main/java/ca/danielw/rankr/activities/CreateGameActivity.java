@@ -31,7 +31,7 @@ public class CreateGameActivity extends AppCompatActivity {
 
     private Button nextBtn;
     private EditText etNameGame;
-    private String name;
+    private String mGameName;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -70,7 +70,7 @@ public class CreateGameActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 nextBtn.setEnabled(true);
 
-                name = etNameGame.getText().toString();
+                mGameName = etNameGame.getText().toString();
             }
         });
 
@@ -92,6 +92,12 @@ public class CreateGameActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                Map<String, Object> gamesUpdates = new HashMap<>();
+                                gamesUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey + "/" + Constants.NODE_GAMES, mGameName);
+
+                                mDatabase.updateChildren(gamesUpdates);
+                                
+                                // Add all existing players to the new game with default rankings
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                     String userId = postSnapshot.getKey();
 
@@ -102,9 +108,9 @@ public class CreateGameActivity extends AppCompatActivity {
                                     Map<String, Object> childUpdates = new HashMap<>();
 
                                     childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueKey
-                                    + "/" + name + "/" + userId, rankingValues);
+                                    + "/" + mGameName + "/" + userId, rankingValues);
                                     childUpdates.put(Constants.NODE_USERS + "/" + userId + "/"
-                                    + Constants.NODE_GAMES + "/" + name, Constants.BASE_RATING);
+                                    + Constants.NODE_GAMES + "/" + mGameName, Constants.BASE_RATING);
 
                                     mDatabase.updateChildren(childUpdates);
                                 }

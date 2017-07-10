@@ -139,8 +139,8 @@ public class PasswordFragment extends Fragment {
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + SignUpActivity.mLeagueName + "/"
                                         + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
-                                // Add default ranking to all rankings
 
+                                // Add default ranking to all league
 //                                childUpdates.put(Constants.NODE_RANKINGS + "/" + SignUpActivity.mLeagueName
 //                                        + "/" + name + "/" + userId, rankingValues);
 
