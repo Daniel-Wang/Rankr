@@ -93,10 +93,10 @@ public class CreateGameActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 Map<String, Object> gamesUpdates = new HashMap<>();
-                                gamesUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey + "/" + Constants.NODE_GAMES, mGameName);
+                                gamesUpdates.put(Constants.NODE_LEAGUES + "/" + leagueKey + "/" + Constants.NODE_GAMES + "/" + mGameName, true);
 
                                 mDatabase.updateChildren(gamesUpdates);
-                                
+
                                 // Add all existing players to the new game with default rankings
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                     String userId = postSnapshot.getKey();

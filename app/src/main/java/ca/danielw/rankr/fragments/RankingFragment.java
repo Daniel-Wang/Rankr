@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import ca.danielw.rankr.R;
+import ca.danielw.rankr.activities.CreateGameActivity;
 import ca.danielw.rankr.activities.EnterGameResultActivity;
 import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.adapters.RankingAdapter;
@@ -34,7 +36,9 @@ public class RankingFragment extends Fragment{
 
     private DatabaseReference mDatabase;
     private TextView tvGameTitle;
+
     private FloatingActionButton mFabRecordGame;
+    private Button mCreateButton;
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
 
@@ -52,9 +56,18 @@ public class RankingFragment extends Fragment{
 
         final RecyclerView rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         tvGameTitle = (TextView) view.findViewById(R.id.tvGameTitle);
+        mCreateButton = (Button) view.findViewById(R.id.btnCreateGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreateGameActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Get the rankings
         String leagueName = ((MainActivity)getActivity()).getmLeagueName();

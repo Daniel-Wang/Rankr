@@ -64,7 +64,7 @@ public class UsernameAdapter extends RecyclerView.Adapter<UsernameAdapter.ViewHo
         mName.setText(name);
 
         TextView mElo = holder.mElo;
-        mElo.setText(rankingModel.getElo());
+        mElo.setText(String.valueOf(rankingModel.getElo()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

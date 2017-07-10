@@ -22,9 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,7 @@ import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.activities.InviteActivity;
 import ca.danielw.rankr.activities.SignUpActivity;
+import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.models.UserModel;
 import ca.danielw.rankr.utils.Constants;
 
@@ -128,30 +131,41 @@ public class PasswordFragment extends Fragment {
                                 userId = user.getUid();
                                 UserModel userModel = new UserModel(SignUpActivity.mUsername, SignUpActivity.mEmail,
                                         SignUpActivity.mLeagueName);
-//                                LeagueModel leagueModel = new LeagueModel(Collections.singletonList(userId));
 
                                 Map<String, Object> userValues = userModel.toMap();
-//                                Map<String, Object> leagueValues = leagueModel.toMap();
 
                                 Log.e(TAG, userId + " " + SignUpActivity.mLeagueName);
 
-                                Map<String, Object> childUpdates = new HashMap<>();
+                                final Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + SignUpActivity.mLeagueName + "/"
                                         + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
 
-                                // Add default ranking to all league
-//                                childUpdates.put(Constants.NODE_RANKINGS + "/" + SignUpActivity.mLeagueName
-//                                        + "/" + name + "/" + userId, rankingValues);
+                                // Add default ranking to all leagues
 
-                                mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                mDatabase.child(Constants.NODE_LEAGUES).child(SignUpActivity.mLeagueName).child(Constants.NODE_GAMES)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                        if (databaseError == null) {
-                                            Log.e(TAG, "onComplete: success");
-                                        } else {
-                                            Log.e(TAG, "onComplete: fail", databaseError.toException());
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                                            addRankingGame(childUpdates, snapshot.getKey());
                                         }
+
+                                        mDatabase.updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
+                                            @Override
+                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                if (databaseError == null) {
+                                                    Log.e(TAG, "onComplete: success");
+                                                } else {
+                                                    Log.e(TAG, "onComplete: fail", databaseError.toException());
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
                                     }
                                 });
 
@@ -173,6 +187,15 @@ public class PasswordFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void addRankingGame(Map<String, Object> childUpdates, String gameName){
+        RankingModel rankingModel = new RankingModel(userId,
+                Constants.BASE_RATING, SignUpActivity.mUsername, 0, Constants.KFACTOR);
+
+        Map<String, Object> rankingValues = rankingModel.toMap();
+        childUpdates.put(Constants.NODE_RANKINGS + "/" + SignUpActivity.mLeagueName
+                + "/" + gameName + "/" + userId, rankingValues);
     }
 
     private void addPreferences(){
