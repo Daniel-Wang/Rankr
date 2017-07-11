@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateGameActivity;
@@ -37,9 +41,9 @@ import ca.danielw.rankr.utils.Constants;
 public class RankingFragment extends Fragment{
 
     private DatabaseReference mDatabase;
-    private TextView tvGameTitle;
 
     private FloatingActionButton mFabRecordGame;
+    private Spinner mGameSpinner;
     private Button mCreateButton;
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
@@ -57,8 +61,8 @@ public class RankingFragment extends Fragment{
 //        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
 
         final RecyclerView rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
-        tvGameTitle = (TextView) view.findViewById(R.id.tvGameTitle);
         mCreateButton = (Button) view.findViewById(R.id.btnCreateGame);
+        mGameSpinner = (Spinner) view.findViewById(R.id.spGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -79,19 +83,24 @@ public class RankingFragment extends Fragment{
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<String> gameList = new ArrayList<>();
+
+                        //Get each game
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            Log.e("Ranking ftrag", snapshot.getKey());
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.exists()));
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildrenCount()));
-                            Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
+                            Log.e("Ranking frag", snapshot.getKey());
+                            Log.e("Ranking frag", String.valueOf(snapshot.exists()));
+                            Log.e("Ranking frag", String.valueOf(snapshot.getChildrenCount()));
+                            Log.e("Ranking frag", String.valueOf(snapshot.getChildren()));
 
                             LeagueModel leagueModel = new LeagueModel();
                             ArrayList<RankingModel> rankings = leagueModel.getmRankings();
 
                             leagueModel.setmLeaguename(snapshot.getKey());
+                            gameList.add(leagueModel.getmLeaguename());
 
+                            //Get all the members and their ranking Models
                             for(DataSnapshot members: snapshot.getChildren()){
-                                Log.e("Ranking ftrag", members.getKey());
+                                Log.e("Ranking frag", members.getKey());
 
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
                                 String userId = members.getKey();
@@ -103,7 +112,7 @@ public class RankingFragment extends Fragment{
                                 rankings.add(rankingModel);
                             }
 
-                            //Sort the rankings by elo,
+                            //Sort the rankings by elo
                             Collections.sort(rankings, new Comparator<RankingModel>() {
                                 @Override
                                 public int compare(RankingModel rankingA, RankingModel rankingB) {
@@ -121,7 +130,6 @@ public class RankingFragment extends Fragment{
                             });
 
                             //Add the ranking
-
                             int size = rankings.size();
                             for(int i = 0; i < size; i++){
                                 rankings.get(i).setRank(i+1);
@@ -131,12 +139,32 @@ public class RankingFragment extends Fragment{
                             leagues.add(leagueModel);
                         }
 
-                        tvGameTitle.setText(leagues.get(mCurrentLeague).getmLeaguename());
+                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                                R.layout.game_spinner_item, gameList);
+                        spinnerAdapter.setDropDownViewResource(R.layout.game_spinner_dropdown_item);
+//                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        mGameSpinner.setAdapter(spinnerAdapter);
+
+                        mGameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                mCurrentLeague = position;
+                                RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
+
+                                rvRankings.setAdapter(adapter);
+                                rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
 
                         RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
 
                         rvRankings.setAdapter(adapter);
-
                         rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
                     }
 

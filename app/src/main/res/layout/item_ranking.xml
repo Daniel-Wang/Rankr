@@ -13,17 +13,17 @@
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="4dp"/>
 
     <TextView
         android:id="@+id/tvUsername"
-        android:gravity="center"
         tools:text="dwang"
         android:textSize="16sp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"/>
+        android:layout_marginLeft="20dp"/>
 
     <TextView
         android:id="@+id/tvElo"
