@@ -13,15 +13,14 @@ import ca.danielw.rankr.utils.Constants;
 public class RankingModel implements Serializable{
     private String id;
     private int elo;
-
     private String username;
-    private String prevEloRank;
-
-    private int rank;
     private int kFactor;
-
     private int wins;
     private int loses;
+
+    private int prevEloRank;
+    private int rank;
+
 
     public RankingModel() {
 
@@ -34,6 +33,37 @@ public class RankingModel implements Serializable{
         this.kFactor = kFactor;
         wins = totalGames;
         loses = totalGames;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RankingModel that = (RankingModel) o;
+
+        if (elo != that.elo) return false;
+        if (kFactor != that.kFactor) return false;
+        if (wins != that.wins) return false;
+        if (loses != that.loses) return false;
+        if (prevEloRank != that.prevEloRank) return false;
+        if (rank != that.rank) return false;
+        if (!id.equals(that.id)) return false;
+        return username.equals(that.username);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + elo;
+        result = 31 * result + username.hashCode();
+        result = 31 * result + kFactor;
+        result = 31 * result + wins;
+        result = 31 * result + loses;
+        result = 31 * result + prevEloRank;
+        result = 31 * result + rank;
+        return result;
     }
 
     public int getWins() {
@@ -76,7 +106,7 @@ public class RankingModel implements Serializable{
         return username;
     }
 
-    public String getPrevEloRank() {
+    public int getPrevEloRank() {
         return prevEloRank;
     }
 
@@ -90,6 +120,14 @@ public class RankingModel implements Serializable{
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setPrevEloRank(int prevEloRank) {
+        this.prevEloRank = prevEloRank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     @Exclude

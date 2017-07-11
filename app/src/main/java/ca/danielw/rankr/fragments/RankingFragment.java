@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateGameActivity;
@@ -84,6 +86,8 @@ public class RankingFragment extends Fragment{
                             Log.e("Ranking ftrag", String.valueOf(snapshot.getChildren()));
 
                             LeagueModel leagueModel = new LeagueModel();
+                            ArrayList<RankingModel> rankings = leagueModel.getmRankings();
+
                             leagueModel.setmLeaguename(snapshot.getKey());
 
                             for(DataSnapshot members: snapshot.getChildren()){
@@ -92,12 +96,38 @@ public class RankingFragment extends Fragment{
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
                                 String userId = members.getKey();
 
+                                rankingModel.setId(members.getKey());
                                 if(userId.equals(user.getUid())) {
                                     mCurrentUser = rankingModel;
                                 }
-                                rankingModel.setId(members.getKey());
-                                leagueModel.getmRankings().add(rankingModel);
+                                rankings.add(rankingModel);
                             }
+
+                            //Sort the rankings by elo,
+                            Collections.sort(rankings, new Comparator<RankingModel>() {
+                                @Override
+                                public int compare(RankingModel rankingA, RankingModel rankingB) {
+                                    int ratingA = rankingA.getElo();
+                                    int ratingB = rankingB.getElo();
+
+                                    if(ratingA < ratingB) {
+                                        return -1;
+                                    } else if(ratingA > ratingB) {
+                                        return 1;
+                                    } else {
+                                        return 0;
+                                    }
+                                }
+                            });
+
+                            //Add the ranking
+
+                            int size = rankings.size();
+                            for(int i = 0; i < size; i++){
+                                rankings.get(i).setRank(i+1);
+                            }
+
+                            //Add the game to the collection of games
                             leagues.add(leagueModel);
                         }
 
@@ -129,7 +159,13 @@ public class RankingFragment extends Fragment{
                 public void onClick(View v) {
 
                     LeagueModel leagueModel = leagues.get(mCurrentLeague);
-                    leagueModel.getmRankings().remove(mCurrentUser);
+                    ArrayList<RankingModel> mUsersList = leagueModel.getmRankings();
+                    mUsersList.remove(mCurrentUser);
+
+                    for (RankingModel rankingModel: mUsersList){
+                        boolean flag = rankingModel.equals(mCurrentUser);
+                        Log.e("FAB intent", rankingModel.getUsername() + " " + flag);
+                    }
 
                     //Start the activity
                     Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);

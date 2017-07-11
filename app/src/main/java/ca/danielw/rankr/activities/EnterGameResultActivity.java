@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -113,6 +114,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         kFactorUpdate(mCurrentUser);
         kFactorUpdate(mOpponent);
+
+        Log.e("Current user", String.valueOf(mCurrentUser.getElo()));
+        Log.e("Opponent", String.valueOf(mOpponent.getElo()));
 
         Map<String, Object> childUpdates = new HashMap<>();
 
