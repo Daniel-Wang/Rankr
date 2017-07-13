@@ -44,6 +44,9 @@ public final class Constants {
     public static final int MASTER_KFACTOR = 16;
     public static final int MASTER_ELO = 2200;
 
+    public static final int ENTER_GAME_RESULT = 1000;
+    public static final int RESULT_OK = 200;
+
     private Constants(){
         throw new AssertionError();
     }

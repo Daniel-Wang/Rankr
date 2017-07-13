@@ -21,8 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
+import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+
+    private boolean firstStart = true;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -120,16 +125,10 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("mainActivity", String.valueOf(dataSnapshot.exists()));
                 if (dataSnapshot.exists()) {
-                    BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-                    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-                    mPager = (ViewPager) findViewById(R.id.vpPager);
-                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
-                    mPager.setAdapter(mPagerAdapter);
-                    mPagerAdapter.setFab(mFab);
+                    setRankingFragment();
                 } else {
                     Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
                 }
             }
 
@@ -138,5 +137,34 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!firstStart) {
+            setRankingFragment();
+        } else {
+            firstStart = false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.ENTER_GAME_RESULT) {
+            if(resultCode == Constants.RESULT_OK) {
+
+            }
+        }
+    }
+
+    private void setRankingFragment() {
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        mPager = (ViewPager) findViewById(R.id.vpPager);
+        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
+        mPager.setAdapter(mPagerAdapter);
+        mPagerAdapter.setFab(mFab);
     }
 }

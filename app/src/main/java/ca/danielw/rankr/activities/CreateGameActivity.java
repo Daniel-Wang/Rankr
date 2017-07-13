@@ -1,6 +1,7 @@
 package ca.danielw.rankr.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -115,6 +116,8 @@ public class CreateGameActivity extends AppCompatActivity {
                                     mDatabase.updateChildren(childUpdates);
                                 }
 
+                                Intent returnIntent = new Intent();
+                                setResult(Constants.RESULT_OK,returnIntent);
                                 activity.finish();
                             }
 

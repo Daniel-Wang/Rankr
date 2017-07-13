@@ -33,6 +33,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
     private RankingModel mOpponent;
 
     private LeagueModel mLeague;
+    private String mLeagueName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
+        mLeagueName = intent.getStringExtra(Constants.LEAGUE_NAME);
         mLeague = (LeagueModel) bundle.getSerializable(Constants.NODE_USERS);
-        mCurrentUser = (RankingModel) intent.getSerializableExtra(Constants.ME_USER);
+        mCurrentUser = (RankingModel) bundle.getSerializable(Constants.ME_USER);
 
         mWin = (TextView) findViewById(R.id.btnWin);
         mLose = (TextView) findViewById(R.id.btnLose);
@@ -82,6 +84,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation
+                sendEndResultIntent();
                 finish();
             }
         });
@@ -96,6 +99,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation
+                sendEndResultIntent();
                 finish();
             }
         });
@@ -105,12 +109,15 @@ public class EnterGameResultActivity extends AppCompatActivity {
     private void updateRankings() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
 
-        String leagueName = mLeague.getmLeaguename();
+        String gameName = mLeague.getmLeaguename();
         String currentUserId = mCurrentUser.getId();
         String currentUsername = mCurrentUser.getUsername();
 
         String oppUserId = mOpponent.getId();
         String oppUsername = mOpponent.getUsername();
+
+        Log.e("Current user k factor", String.valueOf(mCurrentUser.getkFactor()));
+        Log.e("Opponent k factor", String.valueOf(mOpponent.getkFactor()));
 
         kFactorUpdate(mCurrentUser);
         kFactorUpdate(mOpponent);
@@ -120,15 +127,15 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         Map<String, Object> childUpdates = new HashMap<>();
 
-        childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueName
-                + "/" + currentUsername + "/" + currentUserId, mCurrentUser);
+        childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" + gameName
+                 + "/" + currentUserId, mCurrentUser);
         childUpdates.put(Constants.NODE_USERS + "/" + currentUserId + "/"
-                + Constants.NODE_GAMES + "/" + currentUsername, Constants.BASE_RATING);
+                + Constants.NODE_GAMES + "/" + gameName, mCurrentUser.getElo());
 
-        childUpdates.put(Constants.NODE_RANKINGS + "/" + leagueName
-                + "/" + oppUsername + "/" + oppUserId, mOpponent);
+        childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" + gameName
+                + "/" + oppUserId, mOpponent);
         childUpdates.put(Constants.NODE_USERS + "/" + oppUserId + "/"
-                + Constants.NODE_GAMES + "/" + oppUsername, Constants.BASE_RATING);
+                + Constants.NODE_GAMES + "/" + gameName, mOpponent.getElo());
 
         db.updateChildren(childUpdates);
     }
@@ -137,5 +144,10 @@ public class EnterGameResultActivity extends AppCompatActivity {
         if(model.getElo() > Constants.MASTER_ELO) {
             model.setkFactor(Constants.MASTER_KFACTOR);
         }
+    }
+
+    private void sendEndResultIntent() {
+        Intent returnIntent = new Intent();
+        setResult(Constants.RESULT_OK,returnIntent);
     }
 }

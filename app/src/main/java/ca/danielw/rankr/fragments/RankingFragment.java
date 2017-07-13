@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,6 +50,9 @@ public class RankingFragment extends Fragment{
     private int mCurrentLeague = 0;
 
     private RankingModel mCurrentUser;
+    private String mLeagueName;
+
+    private RecyclerView rvRankings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +62,7 @@ public class RankingFragment extends Fragment{
 
 //        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
 
-        final RecyclerView rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
+        rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         mCreateButton = (Button) view.findViewById(R.id.btnCreateGame);
         mGameSpinner = (Spinner) view.findViewById(R.id.spGame);
 
@@ -76,13 +78,15 @@ public class RankingFragment extends Fragment{
         });
 
         // Get the rankings
-        String leagueName = ((MainActivity)getActivity()).getmLeagueName();
-        Log.e("Ranking Fragment", leagueName);
+        mLeagueName = ((MainActivity)getActivity()).getmLeagueName();
+        Log.e("Ranking Fragment", mLeagueName);
 
-        mDatabase.child(Constants.NODE_RANKINGS).child(leagueName)
+        mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.e("Data changed", "Hello");
+
                         List<String> gameList = new ArrayList<>();
 
                         //Get each game
@@ -113,21 +117,7 @@ public class RankingFragment extends Fragment{
                             }
 
                             //Sort the rankings by elo
-                            Collections.sort(rankings, new Comparator<RankingModel>() {
-                                @Override
-                                public int compare(RankingModel rankingA, RankingModel rankingB) {
-                                    int ratingA = rankingA.getElo();
-                                    int ratingB = rankingB.getElo();
-
-                                    if(ratingA < ratingB) {
-                                        return -1;
-                                    } else if(ratingA > ratingB) {
-                                        return 1;
-                                    } else {
-                                        return 0;
-                                    }
-                                }
-                            });
+                            sortRanks(rankings);
 
                             //Add the ranking
                             int size = rankings.size();
@@ -150,10 +140,7 @@ public class RankingFragment extends Fragment{
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 mCurrentLeague = position;
-                                RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
-
-                                rvRankings.setAdapter(adapter);
-                                rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
+                                refreshList(rvRankings);
                             }
 
                             @Override
@@ -162,10 +149,7 @@ public class RankingFragment extends Fragment{
                             }
                         });
 
-                        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
-
-                        rvRankings.setAdapter(adapter);
-                        rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
+                        refreshList(rvRankings);
                     }
 
                     @Override
@@ -187,13 +171,7 @@ public class RankingFragment extends Fragment{
                 public void onClick(View v) {
 
                     LeagueModel leagueModel = leagues.get(mCurrentLeague);
-                    ArrayList<RankingModel> mUsersList = leagueModel.getmRankings();
-                    mUsersList.remove(mCurrentUser);
-
-                    for (RankingModel rankingModel: mUsersList){
-                        boolean flag = rankingModel.equals(mCurrentUser);
-                        Log.e("FAB intent", rankingModel.getUsername() + " " + flag);
-                    }
+                    leagueModel.getmRankings().remove(mCurrentUser);
 
                     //Start the activity
                     Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
@@ -202,11 +180,50 @@ public class RankingFragment extends Fragment{
                     bundle.putSerializable(Constants.NODE_USERS, leagueModel);
                     bundle.putSerializable(Constants.ME_USER, mCurrentUser);
 
+                    intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
                     intent.putExtras(bundle);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
                 }
             });
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Constants.ENTER_GAME_RESULT) {
+            if(resultCode == Constants.RESULT_OK) {
+                ArrayList<RankingModel> rankings = leagues.get(mCurrentLeague).getmRankings();
+                rankings.add(mCurrentUser);
+
+                sortRanks(rankings);
+                refreshList(rvRankings);
+            }
+        }
+    }
+
+    private void sortRanks(ArrayList<RankingModel> rankingModels) {
+        Collections.sort(rankingModels, new Comparator<RankingModel>() {
+            @Override
+            public int compare(RankingModel rankingA, RankingModel rankingB) {
+                int ratingA = rankingA.getElo();
+                int ratingB = rankingB.getElo();
+
+                if(ratingA < ratingB) {
+                    return -1;
+                } else if(ratingA > ratingB) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+
+    private void refreshList(RecyclerView rvRankings) {
+        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
+
+        rvRankings.setAdapter(adapter);
+        rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }
