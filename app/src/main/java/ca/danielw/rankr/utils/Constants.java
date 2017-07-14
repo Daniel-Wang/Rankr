@@ -6,7 +6,6 @@ public final class Constants {
     public static final String EMAIL = "EMAIL";
 
     public static final String NODE_LEAGUES = "leagues";
-    public static final String NODE_NAME = "name";
     public static final String NODE_MEMBERS = "members";
     public static final String NODE_EMAIL = "email";
     public static final String NODE_USERNAME = "username";
@@ -17,7 +16,7 @@ public final class Constants {
 
     public static final String NODE_RANKINGS = "rankings";
     public static final String NODE_ELO = "elo";
-    public static final String NODE_PREV = "prev_elo";
+    public static final String NODE_PREV = "prevRank";
 
     public static final String SIGNUP_FRAGMENT = "SIGNUP_FRAGMENT";
     public static final String SIGNIN_FRAGMENT = "SIGNIN_FRAGMENT";
@@ -46,6 +45,9 @@ public final class Constants {
 
     public static final int ENTER_GAME_RESULT = 1000;
     public static final int RESULT_OK = 200;
+
+    public static final String CURRENT_GAME = "CURRENT_GAME";
+    public static final String FRAGMENT_RANKING = "FRAGMENT_RANKING";
 
     private Constants(){
         throw new AssertionError();

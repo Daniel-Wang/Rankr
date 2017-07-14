@@ -1,10 +1,8 @@
 package ca.danielw.rankr.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,7 +28,6 @@ import java.util.List;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateGameActivity;
-import ca.danielw.rankr.activities.EnterGameResultActivity;
 import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.adapters.RankingAdapter;
 import ca.danielw.rankr.models.LeagueModel;
@@ -43,15 +38,13 @@ public class RankingFragment extends Fragment{
 
     private DatabaseReference mDatabase;
 
-    private FloatingActionButton mFabRecordGame;
     private Spinner mGameSpinner;
     private Button mCreateButton;
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
 
-    private int mCurrentLeague = 0;
+    private int mCurrentGame = 0;
 
-    private RankingModel mCurrentUser;
     private String mLeagueName;
 
     private RecyclerView rvRankings;
@@ -64,14 +57,11 @@ public class RankingFragment extends Fragment{
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.ranking_fragment, container, false);
 
-//        mFabRecordGame = (FloatingActionButton) view.findViewById(R.id.fabRecordGame);
-
         rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         mCreateButton = (Button) view.findViewById(R.id.btnCreateGame);
         mGameSpinner = (Spinner) view.findViewById(R.id.spGame);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,12 +101,7 @@ public class RankingFragment extends Fragment{
                                 Log.e("Ranking frag", members.getKey());
 
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
-                                String userId = members.getKey();
 
-                                rankingModel.setId(members.getKey());
-                                if(userId.equals(user.getUid())) {
-                                    mCurrentUser = rankingModel;
-                                }
                                 rankings.add(rankingModel);
                             }
 
@@ -142,7 +127,7 @@ public class RankingFragment extends Fragment{
                         mGameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                mCurrentLeague = position;
+                                mCurrentGame = position;
                                 refreshList(rvRankings);
                             }
 
@@ -160,56 +145,10 @@ public class RankingFragment extends Fragment{
 
                     }
                 });
+
         // Calculate the position differential from the previous day
 
         return view;
-    }
-
-    public void setFab(FloatingActionButton fab){
-        mFabRecordGame = fab;
-        Log.e("Ranking", String.valueOf(fab));
-        if(mFabRecordGame != null){
-            mFabRecordGame.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    LeagueModel leagueModel = leagues.get(mCurrentLeague);
-                    leagueModel.getmRankings().remove(mCurrentUser);
-
-                    //Start the activity
-                    Intent intent = new Intent(mContext, EnterGameResultActivity.class);
-
-                    Log.e("Current", String.valueOf(mCurrentUser.getkFactor()));
-                    Log.e("Opponent1", String.valueOf(leagueModel.getmRankings().get(0).getkFactor()));
-                    Log.e("Opponent2", String.valueOf(leagueModel.getmRankings().get(1).getkFactor()));
-                    Log.e("Opponent3", String.valueOf(leagueModel.getmRankings().get(2).getkFactor()));
-
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constants.NODE_USERS, leagueModel);
-                    bundle.putSerializable(Constants.ME_USER, mCurrentUser);
-
-                    intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
-                    intent.putExtras(bundle);
-
-
-                    startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
-
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == Constants.ENTER_GAME_RESULT) {
-            if(resultCode == Constants.RESULT_OK) {
-                ArrayList<RankingModel> rankings = leagues.get(mCurrentLeague).getmRankings();
-                rankings.add(mCurrentUser);
-
-                sortRanks(rankings);
-                refreshList(rvRankings);
-            }
-        }
     }
 
     private void sortRanks(ArrayList<RankingModel> rankingModels) {
@@ -231,7 +170,7 @@ public class RankingFragment extends Fragment{
     }
 
     private void refreshList(RecyclerView rvRankings) {
-        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentLeague));
+        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentGame));
 
         rvRankings.setAdapter(adapter);
         rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -241,5 +180,9 @@ public class RankingFragment extends Fragment{
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    public int getCurrentgame() {
+        return mCurrentGame;
     }
 }

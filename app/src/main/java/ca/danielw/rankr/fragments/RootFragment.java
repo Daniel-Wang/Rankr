@@ -1,22 +1,17 @@
 package ca.danielw.rankr.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import ca.danielw.rankr.R;
-import ca.danielw.rankr.activities.CreateLeagueActivity;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
-import ca.danielw.rankr.fragments.EmailFragment;
 import ca.danielw.rankr.utils.Constants;
 
 public class RootFragment extends Fragment{
-    private RankingFragment mRankingFragment;
 
     private static final String TAG = "RootFragment";
 
@@ -47,9 +42,8 @@ public class RootFragment extends Fragment{
                 transaction.replace(R.id.root_frame, fragment1);
                 break;
             case Constants.HOME_FRAGMENT:
-                mRankingFragment = new RankingFragment();
 
-                transaction.replace(R.id.root_frame, mRankingFragment);
+                transaction.replace(R.id.root_frame, new RankingFragment(), Constants.FRAGMENT_RANKING);
                 break;
             case Constants.SIGNUP_FRAGMENT:
                 Bundle bundle2 = new Bundle();
@@ -67,12 +61,5 @@ public class RootFragment extends Fragment{
         transaction.commit();
 
         return view;
-    }
-
-    public void setFab (FloatingActionButton fab){
-        if(mRankingFragment != null){
-            mRankingFragment.setFab(fab);
-        }
-        Log.e("RootActivity", String.valueOf(fab));
     }
 }

@@ -1,18 +1,14 @@
 package ca.danielw.rankr.adapters;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import ca.danielw.rankr.fragments.RootFragment;
 
 // PagerAdapter class
 public class SlidePagerAdapter extends FragmentPagerAdapter {
-    private FloatingActionButton mFab = null;
-    private RootFragment fabFrag = null;
 
     public int NUM = 1;
     private String mLocation;
@@ -30,8 +26,6 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
             Bundle bundle = new Bundle();
             bundle.putString(PUT_EXTRA_SOURCE_LOCATION, mLocation);
             RootFragment fragment = new RootFragment();
-            fabFrag = fragment;
-            fragment.setFab(mFab);
             fragment.setArguments(bundle);
             return fragment;
         } else {
@@ -42,12 +36,5 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return NUM;
-    }
-
-    public void setFab(FloatingActionButton fab) {
-        if(fabFrag != null){
-            fabFrag.setFab(fab);
-        }
-        Log.e("Page adapter", String.valueOf(fab));
     }
 }

@@ -18,7 +18,7 @@ public class RankingModel implements Serializable{
     private int wins;
     private int loses;
 
-    private int prevEloRank;
+    private int prevRank;
     private int rank;
 
 
@@ -46,7 +46,7 @@ public class RankingModel implements Serializable{
         if (kFactor != that.kFactor) return false;
         if (wins != that.wins) return false;
         if (loses != that.loses) return false;
-        if (prevEloRank != that.prevEloRank) return false;
+        if (prevRank != that.prevRank) return false;
         if (rank != that.rank) return false;
         if (!id.equals(that.id)) return false;
         return username.equals(that.username);
@@ -61,7 +61,7 @@ public class RankingModel implements Serializable{
         result = 31 * result + kFactor;
         result = 31 * result + wins;
         result = 31 * result + loses;
-        result = 31 * result + prevEloRank;
+        result = 31 * result + prevRank;
         result = 31 * result + rank;
         return result;
     }
@@ -106,8 +106,8 @@ public class RankingModel implements Serializable{
         return username;
     }
 
-    public int getPrevEloRank() {
-        return prevEloRank;
+    public int getPrevRank() {
+        return prevRank;
     }
 
     public int getRank(){
@@ -122,8 +122,8 @@ public class RankingModel implements Serializable{
         this.username = username;
     }
 
-    public void setPrevEloRank(int prevEloRank) {
-        this.prevEloRank = prevEloRank;
+    public void setPrevRank(int prevRank) {
+        this.prevRank = prevRank;
     }
 
     public void setRank(int rank) {
@@ -134,7 +134,7 @@ public class RankingModel implements Serializable{
     public Map<String, Object> toMap(){
         HashMap<String, Object> result = new HashMap<>();
         result.put(Constants.NODE_ELO, elo);
-        result.put(Constants.NODE_PREV, prevEloRank);
+        result.put(Constants.NODE_PREV, prevRank);
         result.put(Constants.NODE_USERNAME, username);
         result.put(Constants.K_FACTOR, kFactor);
         result.put(Constants.WINS, wins);

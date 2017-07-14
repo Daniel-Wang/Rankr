@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
+import ca.danielw.rankr.fragments.RankingFragment;
 import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
 
@@ -51,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
                     mPager.setAdapter(mPagerAdapter);
-                    mPagerAdapter.setFab(mFab);
                     mFab.show();
                     return true;
                 case R.id.navigation_profile:
@@ -80,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, EnterGameResultActivity.class);
+                RankingFragment fragment = (RankingFragment) getSupportFragmentManager().findFragmentByTag(Constants.FRAGMENT_RANKING);
+                if(fragment != null) {
+                    intent.putExtra(Constants.CURRENT_GAME, fragment.getCurrentgame());
+                    intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
+                    startActivity(intent);
+                } else {
+                    //Error
+                }
+            }
+        });
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         Log.e("MainActivity", currentUser.getUid());
@@ -100,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(Constants.LEAGUE_NAME, mLeagueName);
-                    editor.commit();
+                    editor.apply();
 
                     updateUI();
                 }
@@ -147,15 +164,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == Constants.ENTER_GAME_RESULT) {
-            if(resultCode == Constants.RESULT_OK) {
-
-            }
-        }
-    }
-
     private void setRankingFragment() {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -163,6 +171,5 @@ public class MainActivity extends AppCompatActivity {
         mPager = (ViewPager) findViewById(R.id.vpPager);
         mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
         mPager.setAdapter(mPagerAdapter);
-        mPagerAdapter.setFab(mFab);
     }
 }
