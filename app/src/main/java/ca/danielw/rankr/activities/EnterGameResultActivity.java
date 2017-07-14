@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
     private TextView mWin;
     private TextView mLose;
+    private LinearLayout mBottomBar;
 
     private boolean mResult;
     private RankingModel mCurrentUser;
@@ -55,6 +57,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         mWin = (TextView) findViewById(R.id.btnWin);
         mLose = (TextView) findViewById(R.id.btnLose);
+        mBottomBar = (LinearLayout) findViewById(R.id.llSelector);
 
         RecyclerView rvUsernames = (RecyclerView) findViewById(R.id.rvUsernames);
 
@@ -155,6 +158,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
                                     @Override
                                     public void onNext(RankingModel rankingModel) {
                                         mOpponent = rankingModel;
+                                        mBottomBar.setVisibility(View.VISIBLE);
                                     }
                                 });
                                 break;
