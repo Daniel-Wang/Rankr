@@ -1,5 +1,7 @@
 package ca.danielw.rankr.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -54,6 +56,8 @@ public class RankingFragment extends Fragment{
 
     private RecyclerView rvRankings;
 
+    private Context mContext;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,7 +76,7 @@ public class RankingFragment extends Fragment{
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreateGameActivity.class);
+                Intent intent = new Intent(mContext, CreateGameActivity.class);
                 startActivity(intent);
             }
         });
@@ -129,10 +133,9 @@ public class RankingFragment extends Fragment{
                             leagues.add(leagueModel);
                         }
 
-                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
                                 R.layout.game_spinner_item, gameList);
                         spinnerAdapter.setDropDownViewResource(R.layout.game_spinner_dropdown_item);
-//                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         mGameSpinner.setAdapter(spinnerAdapter);
 
@@ -174,7 +177,12 @@ public class RankingFragment extends Fragment{
                     leagueModel.getmRankings().remove(mCurrentUser);
 
                     //Start the activity
-                    Intent intent = new Intent(getActivity(), EnterGameResultActivity.class);
+                    Intent intent = new Intent(mContext, EnterGameResultActivity.class);
+
+                    Log.e("Current", String.valueOf(mCurrentUser.getkFactor()));
+                    Log.e("Opponent1", String.valueOf(leagueModel.getmRankings().get(0).getkFactor()));
+                    Log.e("Opponent2", String.valueOf(leagueModel.getmRankings().get(1).getkFactor()));
+                    Log.e("Opponent3", String.valueOf(leagueModel.getmRankings().get(2).getkFactor()));
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constants.NODE_USERS, leagueModel);
@@ -183,7 +191,9 @@ public class RankingFragment extends Fragment{
                     intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
                     intent.putExtras(bundle);
 
+
                     startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
+
                 }
             });
         }
@@ -209,9 +219,9 @@ public class RankingFragment extends Fragment{
                 int ratingA = rankingA.getElo();
                 int ratingB = rankingB.getElo();
 
-                if(ratingA < ratingB) {
+                if(ratingA > ratingB) {
                     return -1;
-                } else if(ratingA > ratingB) {
+                } else if(ratingA < ratingB) {
                     return 1;
                 } else {
                     return 0;
@@ -225,5 +235,11 @@ public class RankingFragment extends Fragment{
 
         rvRankings.setAdapter(adapter);
         rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 }

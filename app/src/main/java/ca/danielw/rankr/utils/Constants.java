@@ -35,7 +35,7 @@ public final class Constants {
     public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
 
     public static final String ME_USER = "ME_USER";
-    public static final String K_FACTOR = "k_factor";
+    public static final String K_FACTOR = "kFactor";
 
     public static final String LOSES = "loses";
     public static final String WINS = "wins";

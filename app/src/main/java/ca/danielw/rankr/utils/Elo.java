@@ -5,7 +5,7 @@ import android.util.Log;
 import ca.danielw.rankr.models.RankingModel;
 
 public class Elo {
-    private static int advantage = 400;
+    private static Double advantage = 400.0;
 
     public static void calculateElo(RankingModel userA, RankingModel userB, boolean result){
         Double scoreA = result ? 1.0 : 0.0;
@@ -17,8 +17,8 @@ public class Elo {
         Double Ea = expectedRating(ratingA, ratingB);
         Double Eb = 1.0 - Ea;
 
-        int newRatingA = ratingA - (int) Math.round(userA.getkFactor() * (scoreA - Ea));
-        int newRatingB = ratingB - (int) Math.round(userB.getkFactor() * (scoreB - Eb));
+        int newRatingA = ratingA + (int) Math.round(userA.getkFactor() * (scoreA - Ea));
+        int newRatingB = ratingB + (int) Math.round(userB.getkFactor() * (scoreB - Eb));
 
         Log.e("Rating A", String.valueOf(newRatingA));
         Log.e("Rating B", String.valueOf(newRatingB));
@@ -28,8 +28,8 @@ public class Elo {
     }
 
     private static Double expectedRating(int ratingA, int ratingB){
-        Double denom = 1 + Math.pow(10.0, (ratingB - ratingA) / advantage);
-        return Math.floor(100 / denom) / 100;
+        Double denom = 1.0 + Math.pow(10.0, (ratingB - ratingA) / advantage);
+        return 1.0 / denom;
     }
 
 }

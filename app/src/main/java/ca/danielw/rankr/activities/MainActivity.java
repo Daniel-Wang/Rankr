@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         mLeagueName = sharedPref.getString(Constants.LEAGUE_NAME, null);
 
-        Log.e("MainActivity", mLeagueName);
-
         if (mLeagueName != null) {
             updateUI();
         } else {

@@ -81,6 +81,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
                 mCurrentUser.setWins(mCurrentUser.getWins() + 1);
                 mOpponent.setLoses(mOpponent.getLoses() + 1);
 
+                Log.e("Current", String.valueOf(mCurrentUser.getkFactor()));
+                Log.e("Opponent", String.valueOf(mOpponent.getkFactor()));
+
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
                 //Show animation
@@ -118,6 +121,9 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         Log.e("Current user k factor", String.valueOf(mCurrentUser.getkFactor()));
         Log.e("Opponent k factor", String.valueOf(mOpponent.getkFactor()));
+
+        mCurrentUser.setId(null);
+        mOpponent.setId(null);
 
         kFactorUpdate(mCurrentUser);
         kFactorUpdate(mOpponent);
