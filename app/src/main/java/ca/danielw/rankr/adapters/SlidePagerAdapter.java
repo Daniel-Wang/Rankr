@@ -12,7 +12,7 @@ import ca.danielw.rankr.utils.Constants;
 // PagerAdapter class
 public class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    private int NUM = 2;
+    private int NUM = 3;
     private String mLocation;
 
     public SlidePagerAdapter(FragmentManager fm, String sourceLocation) {
@@ -22,7 +22,7 @@ public class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0 || position == 1){
+        if (position == 0 || position == 1 || position == 2){
             Bundle bundle = new Bundle();
             bundle.putString(Constants.SOURCE_LOCATION, mLocation);
             RootFragment fragment = new RootFragment();

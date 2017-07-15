@@ -58,6 +58,10 @@ public class RootFragment extends Fragment{
                 transaction.replace(R.id.root_frame, new ProfileFragment());
                 break;
 
+            case Constants.SETTINGS_FRAGMENT:
+                transaction.replace(R.id.root_frame, new SettingsFragment());
+                break;
+
             default:
                 break;
         }

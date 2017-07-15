@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
                     mFab.hide();
                     return true;
                 case R.id.navigation_settings:
-//                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SETTINGS_FRAGMENT);
-//                    mPager.setAdapter(mPagerAdapter);
+                    mCurrentNav = R.id.navigation_settings;
+                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SETTINGS_FRAGMENT);
+                    mPager.setAdapter(mPagerAdapter);
                     mFab.hide();
                     return true;
             }

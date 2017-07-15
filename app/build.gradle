@@ -54,6 +54,9 @@ dependencies {
     compile ('net.sargue:mailgun:1.4.0', {
         exclude group: 'org.glassfish.hk2.external', module: 'javax.inject'
     })
+
+    //Custom tabs
+    compile "com.android.support:customtabs:$support_library_version"
 }
 repositories {
     mavenCentral()
