@@ -12,10 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,13 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
-import ca.danielw.rankr.fragments.ProfileFragment;
 import ca.danielw.rankr.fragments.RankingFragment;
-import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
                     mCurrentNav = R.id.navigation_profile;
                     mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.PROFILE_FRAGMENT);
                     mPager.setAdapter(mPagerAdapter);
-//                    android.app.FragmentTransaction transaction = getFragmentManager()
-//                            .beginTransaction();
-//                    transaction.replace(R.id.root_frame, new ProfileFragment());
-//                    transaction.commit();
                     mFab.hide();
                     return true;
                 case R.id.navigation_settings:

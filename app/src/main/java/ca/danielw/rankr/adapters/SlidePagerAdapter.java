@@ -12,7 +12,7 @@ import ca.danielw.rankr.utils.Constants;
 // PagerAdapter class
 public class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    public int NUM = 2;
+    private int NUM = 2;
     private String mLocation;
 
     public SlidePagerAdapter(FragmentManager fm, String sourceLocation) {
