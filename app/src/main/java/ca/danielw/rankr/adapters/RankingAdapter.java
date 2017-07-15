@@ -1,7 +1,9 @@
 package ca.danielw.rankr.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
-        public TextView tvRank;
-        public TextView tvUsername;
-        public TextView tvElo;
+        private TextView mRank;
+        private TextView mUsername;
+        private TextView mElo;
+        private TextView mRankDiff;
+        private View mNoRankChange;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
@@ -29,9 +33,11 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
             // to access the context from any ViewHolder instance.
             super(itemView);
 
-            tvRank = (TextView) itemView.findViewById(R.id.tvRank);
-            tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
-            tvElo = (TextView) itemView.findViewById(R.id.tvElo);
+            mRankDiff = (TextView) itemView.findViewById(R.id.tvRankDiff);
+            mNoRankChange = itemView.findViewById(R.id.horizontal_divider);
+            mRank = (TextView) itemView.findViewById(R.id.tvRank);
+            mUsername = (TextView) itemView.findViewById(R.id.tvUsername);
+            mElo = (TextView) itemView.findViewById(R.id.tvElo);
 
         }
     }
@@ -63,13 +69,34 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.ViewHold
         RankingModel ranking = mLeagueModel.getmRankings().get(position);
 
         // Set item views based on your views and data model
-        TextView rank = holder.tvRank;
-        rank.setText(String.valueOf(ranking.getRank()));
+        TextView tvrank = holder.mRank;
+        TextView tvRankDiff = holder.mRankDiff;
 
-        TextView username = holder.tvUsername;
+        View noRankChange = holder.mNoRankChange;
+
+        int rank = ranking.getRank();
+        int rankDiff = rank - ranking.getPrevRank();
+        String rankDiffString = "";
+
+        if(rankDiff > 0) {
+            rankDiffString = rankDiffString.concat("+" + String.valueOf(rankDiff));
+            tvRankDiff.setTextColor(ContextCompat.getColor(mContext, R.color.green));
+            tvRankDiff.setVisibility(View.VISIBLE);
+        } else if (rankDiff < 0) {
+            rankDiffString = rankDiffString.concat(String.valueOf(rankDiff));
+            tvRankDiff.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+            tvRankDiff.setVisibility(View.VISIBLE);
+        } else {
+            noRankChange.setVisibility(View.VISIBLE);
+        }
+
+        tvrank.setText(String.valueOf(rank));
+        tvRankDiff.setText(rankDiffString);
+
+        TextView username = holder.mUsername;
         username.setText(ranking.getUsername());
 
-        TextView elo = holder.tvElo;
+        TextView elo = holder.mElo;
         elo.setText(String.valueOf(ranking.getElo()));
     }
 

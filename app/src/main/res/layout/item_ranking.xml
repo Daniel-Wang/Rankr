@@ -6,20 +6,45 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_horizontal_margin">
 
-    <TextView
-        android:id="@+id/tvRank"
-        tools:text="1"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="4dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvRank"
+            tools:text="1"
+            android:gravity="left"
+            android:textSize="17sp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/tvRankDiff"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="+2"
+            tools:visibility="visible"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/black"
+            android:id="@+id/horizontal_divider"
+            tools:visibility="visible"
+            android:visibility="gone"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tvUsername"
         tools:text="dwang"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,7 +53,7 @@
     <TextView
         android:id="@+id/tvElo"
         tools:text="1800"
-        android:textSize="16sp"
+        android:textSize="17sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/activity_horizontal_margin"/>

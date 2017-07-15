@@ -169,8 +169,6 @@ public class PasswordFragment extends Fragment {
                                     }
                                 });
 
-                                Log.e("hello", "asd");
-
                                 // Start the leaderboard activity
                                 Intent intent = new Intent(getActivity(), InviteActivity.class);
                                 intent.putExtra(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
@@ -201,8 +199,6 @@ public class PasswordFragment extends Fragment {
     private void addPreferences(){
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
-        Log.e("Verify", SignUpActivity.mLeagueName);
-        editor.commit();
+        editor.apply();
     }
 }
