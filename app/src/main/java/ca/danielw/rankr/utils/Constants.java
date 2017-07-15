@@ -25,6 +25,8 @@ public final class Constants {
     public static final String PROFILE_FRAGMENT = "PROFILE_FRAGMENT";
     public static final String SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
 
+    public static final String SOURCE_LOCATION = "SOURCE_LOCATION";
+
     public static final String SIGN_IN_INTENT = "SIGN_IN_INTENT";
 
     public static final int BASE_RATING = 1200;

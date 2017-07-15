@@ -3,17 +3,17 @@ package ca.danielw.rankr.adapters;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 
 import ca.danielw.rankr.fragments.RootFragment;
+import ca.danielw.rankr.utils.Constants;
 
 // PagerAdapter class
-public class SlidePagerAdapter extends FragmentPagerAdapter {
+public class SlidePagerAdapter extends FragmentStatePagerAdapter {
 
-    public int NUM = 1;
+    public int NUM = 2;
     private String mLocation;
-
-    public static final String PUT_EXTRA_SOURCE_LOCATION = "source_location";
 
     public SlidePagerAdapter(FragmentManager fm, String sourceLocation) {
         super(fm);
@@ -22,9 +22,9 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == 0){
+        if (position == 0 || position == 1){
             Bundle bundle = new Bundle();
-            bundle.putString(PUT_EXTRA_SOURCE_LOCATION, mLocation);
+            bundle.putString(Constants.SOURCE_LOCATION, mLocation);
             RootFragment fragment = new RootFragment();
             fragment.setArguments(bundle);
             return fragment;
@@ -36,5 +36,10 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         return NUM;
+    }
+
+    @Override
+    public int getItemPosition(Object object){
+        return PagerAdapter.POSITION_NONE;
     }
 }

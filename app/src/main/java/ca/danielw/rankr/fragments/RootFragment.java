@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ca.danielw.rankr.R;
-import ca.danielw.rankr.adapters.SlidePagerAdapter;
 import ca.danielw.rankr.utils.Constants;
 
 public class RootFragment extends Fragment{
@@ -20,7 +19,7 @@ public class RootFragment extends Fragment{
                              Bundle savedInstanceState) {
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.fragment_root, container, false);
-        String sourceLocation = getArguments().getString(SlidePagerAdapter.PUT_EXTRA_SOURCE_LOCATION);
+        String sourceLocation = getArguments().getString(Constants.SOURCE_LOCATION);
 
         FragmentTransaction transaction = getFragmentManager()
                 .beginTransaction();
@@ -54,6 +53,11 @@ public class RootFragment extends Fragment{
 
                 transaction.replace(R.id.root_frame, fragment2);
                 break;
+
+            case Constants.PROFILE_FRAGMENT:
+                transaction.replace(R.id.root_frame, new ProfileFragment());
+                break;
+
             default:
                 break;
         }
