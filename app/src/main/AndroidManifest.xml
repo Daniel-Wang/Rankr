@@ -39,7 +39,18 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".activities.SignUpActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="www.danielw.ca"
+                    android:pathPrefix="/rankr/signup" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:screenOrientation="portrait"
             android:name=".activities.EnterGameResultActivity" />

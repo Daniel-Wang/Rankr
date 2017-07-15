@@ -1,5 +1,6 @@
 package ca.danielw.rankr.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -170,11 +171,13 @@ public class PasswordFragment extends Fragment {
                                 });
 
                                 // Start the leaderboard activity
-                                Intent intent = new Intent(getActivity(), InviteActivity.class);
+                                Activity activity = getActivity();
+                                Intent intent = new Intent(activity, InviteActivity.class);
                                 intent.putExtra(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
                                 intent.putExtra(Constants.EMAIL, SignUpActivity.mEmail);
 
                                 startActivity(intent);
+                                activity.finish();
                             }
 
                         } else {

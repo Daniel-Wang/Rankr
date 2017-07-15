@@ -2,6 +2,8 @@ package ca.danielw.rankr.utils;
 
 public final class Constants {
 
+    public static final String PACKAGE_NAME = "ca.danielw.rankr";
+
     public static final String LEAGUE_NAME = "LEAGUE_NAME";
     public static final String EMAIL = "EMAIL";
 

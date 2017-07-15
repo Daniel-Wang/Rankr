@@ -51,7 +51,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     //For Mailgun
-    compile ('net.sargue:mailgun:1.4.0', {
+    compile ('net.sargue:mailgun:1.4.1', {
         exclude group: 'org.glassfish.hk2.external', module: 'javax.inject'
     })
 

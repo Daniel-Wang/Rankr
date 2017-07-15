@@ -38,6 +38,11 @@ public class SignInLeagueNameFragment extends Fragment {
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
 
+        if(SignUpActivity.mLeagueName != null || !SignUpActivity.mLeagueName.isEmpty()) {
+            etLeagueName.setText(SignUpActivity.mLeagueName);
+            etLeagueName.setEnabled(true);
+        }
+
         etLeagueName.requestFocus();
 
         etLeagueName.addTextChangedListener(new TextWatcher() {

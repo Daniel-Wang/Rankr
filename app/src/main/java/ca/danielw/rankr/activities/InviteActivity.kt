@@ -153,16 +153,15 @@ class InviteActivity : Activity() {
                 .from("Rankr", Constants.FROM_DOMAIN)
 
         val body = Body.builder()
-                .h1("Join " + mLeagueName + " on Rankr")
+                .h3("Join " + mLeagueName + " on Rankr")
+                .p(mEmail + " has invited you to join the Rankr league <b>" + mLeagueName + "</b>.")
+                .link("http://play.google.com/store/apps/details?id=" + Constants.PACKAGE_NAME, "Download the App")
                 .br()
-                .p(mEmail + " has invited you to join the Rankr league " + mLeagueName + ". Join now to start playing!")
-                .br()
-                .link("", "Join Now")
-                .br()
+                .link("www.danielw.ca/rankr/signup?" + Constants.NODE_LEAGUE + "=" + mLeagueName, "Join Now")
                 .br()
                 .p("Make by the Rankr team (Daniel Wang)")
-                .p("Ottawa/Waterloo/Toronto, ON")
-                .build();
+                .p("Toronto, ON")
+                .build()
 
         for (item in mutableList){
             if (item != null) {
@@ -181,7 +180,6 @@ class InviteActivity : Activity() {
                     .build()
                     .send()
         }
-
     }
 
     override fun onBackPressed() {
