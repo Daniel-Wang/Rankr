@@ -3,6 +3,7 @@ package ca.danielw.rankr.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,6 @@ public class ProfileFragment extends Fragment {
     private LinearLayout mGamesLayout;
 
     private DatabaseReference mDatabase;
-
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +69,7 @@ public class ProfileFragment extends Fragment {
 
                                     tvGameName.setText(snapshot.getKey());
                                     tvGameElo.setText(String.valueOf(snapshot.getValue()));
+                                    tvGameElo.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
 
                                     mGamesLayout.addView(tvGameName);
                                     mGamesLayout.addView(tvGameElo);

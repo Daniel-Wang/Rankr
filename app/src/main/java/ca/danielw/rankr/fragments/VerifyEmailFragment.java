@@ -1,5 +1,6 @@
 package ca.danielw.rankr.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -90,8 +91,7 @@ public class VerifyEmailFragment extends Fragment {
                                 SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
-                                Log.e("Verify", CreateLeagueActivity.mLeagueName);
-                                editor.commit();
+                                editor.apply();
 
                                 UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail,
                                         CreateLeagueActivity.mLeagueName);
@@ -115,11 +115,13 @@ public class VerifyEmailFragment extends Fragment {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         // Start the invite activity
-                                        Intent intent = new Intent(getActivity(), InviteActivity.class);
+                                        Activity activity = getActivity();
+                                        Intent intent = new Intent(activity, InviteActivity.class);
                                         intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
                                         intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
 
                                         startActivity(intent);
+                                        activity.finish();
                                     }
                                 });
                             }
