@@ -202,6 +202,7 @@ public class PasswordFragment extends Fragment {
     private void addPreferences(){
         SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.LEAGUE_NAME, SignUpActivity.mLeagueName);
         editor.apply();
     }
 }

@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,13 +59,17 @@ public class VerifyEmailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Refresh to see if the user has been validated
+
                 mAuth.signOut();
                 signIn(CreateLeagueActivity.mEmail, CreateLeagueActivity.mPassword);
             }
         });
 
-        createUser();
-
+        if (!CreateLeagueActivity.isVerified) {
+            createUser();
+        } else {
+            nextBtn.setEnabled(true);
+        }
         return view;
     }
 
@@ -97,15 +103,25 @@ public class VerifyEmailFragment extends Fragment {
                                 childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName + "/"
                                         + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
 
-                                mDatabase.updateChildren(childUpdates);
+                                mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("Update failed", e.getMessage());
+                                        Toast.makeText(getActivity(), "That league name is already used.",
+                                                Toast.LENGTH_LONG).show();
+                                        CreateLeagueActivity.isVerified = true;
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // Start the invite activity
+                                        Intent intent = new Intent(getActivity(), InviteActivity.class);
+                                        intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                                        intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
 
-
-                                // Start the invite activity
-                                Intent intent = new Intent(getActivity(), InviteActivity.class);
-                                intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
-                                intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
-
-                                startActivity(intent);
+                                        startActivity(intent);
+                                    }
+                                });
                             }
 
                         } else {
@@ -148,6 +164,8 @@ public class VerifyEmailFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Email sent.");
+                            Toast.makeText(getActivity(), "Email has been sent",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

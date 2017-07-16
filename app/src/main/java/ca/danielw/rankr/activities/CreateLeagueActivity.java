@@ -25,6 +25,8 @@ public class CreateLeagueActivity extends AppCompatActivity {
     public static String mUsername;
     public static String mPassword;
 
+    public static boolean isVerified = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

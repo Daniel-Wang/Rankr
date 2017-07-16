@@ -29,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
-                android:text="danielw68@gmail.com"
                 style="@style/EditText.Flow"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -40,7 +39,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="We suggest using your work email if you're create a team for your business, department, or project"/>
+            android:text="@string/email_summary_text"/>
 
     </LinearLayout>
 

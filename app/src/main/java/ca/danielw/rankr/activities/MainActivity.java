@@ -9,7 +9,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -104,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser != null) {
             mCurrentUserId = currentUser.getUid();
-            Log.e("MainActivity", currentUser.getUid());
         }
         //Get this user's League and check if a game exists, if not, then start the create game activity
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -143,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
         mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("mainActivity", String.valueOf(dataSnapshot.exists()));
                 if (dataSnapshot.exists()) {
                     setRankingFragment();
                 } else {

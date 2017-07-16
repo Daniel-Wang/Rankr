@@ -7,7 +7,7 @@
 
     <!--Phrases-->
     <string name="intro_phrase_1">Join your friends. Climb the ladder.</string>
-    <string name="welcome_text">Welcome to rankr</string>
+    <string name="welcome_text">Welcome to Rankr</string>
     <string name="sign_in_text">Sign in</string>
     <string name="create_league_text">Create League</string>
     <string name="title_activity_intro">IntroActivity</string>
@@ -19,4 +19,7 @@
     <string name="win">Win</string>
     <string name="lose">Lose</string>
     <string name="select_opponent">Select Your Opponent</string>
+
+    <string name="mailgun_api_key">key-181e8242f9bfaf5d0726ce4770e37963</string>
+    <string name="email_summary_text">We suggest using your work email if you\'re create a team for your business, department, or project</string>
 </resources>

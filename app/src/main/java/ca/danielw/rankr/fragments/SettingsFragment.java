@@ -2,7 +2,9 @@ package ca.danielw.rankr.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.customtabs.CustomTabsIntent;
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.IntroActivity;
+import ca.danielw.rankr.utils.Constants;
 
 public class SettingsFragment extends Fragment{
 
@@ -44,6 +47,7 @@ public class SettingsFragment extends Fragment{
                 //Show dialog
                 Activity activity = getActivity();
                 if(activity != null) {
+                    addPreferences();
                     Intent intent = new Intent(activity, IntroActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -64,5 +68,12 @@ public class SettingsFragment extends Fragment{
         });
 
         return view;
+    }
+
+    private void addPreferences(){
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Constants.LEAGUE_NAME, null);
+        editor.apply();
     }
 }

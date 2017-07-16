@@ -16,6 +16,7 @@ public final class Constants {
     public static final String NODE_GAMES = "games";
     public static final String NODE_LEAGUE = "league";
 
+    public static final String RANK = "rank";
     public static final String NODE_RANKINGS = "rankings";
     public static final String NODE_ELO = "elo";
     public static final String NODE_PREV = "prevRank";
@@ -34,7 +35,6 @@ public final class Constants {
     public static final int BASE_RATING = 1200;
 
     public static final String DOMAIN_NAME = "mail.danielw.ca";
-    public static final String API_KEY = "key-181e8242f9bfaf5d0726ce4770e37963";
     public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
 
     public static final String ME_USER = "ME_USER";

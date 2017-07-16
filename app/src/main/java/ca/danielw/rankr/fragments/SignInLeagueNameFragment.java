@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,6 @@ import ca.danielw.rankr.activities.SignUpActivity;
 import ca.danielw.rankr.utils.Constants;
 
 public class SignInLeagueNameFragment extends Fragment {
-    private static final String TAG = "SignInLeagueNameFragment";
     private String INTENT = null;
 
     private Button nextBtn;
@@ -38,9 +36,9 @@ public class SignInLeagueNameFragment extends Fragment {
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
 
-        if(SignUpActivity.mLeagueName != null || !SignUpActivity.mLeagueName.isEmpty()) {
+        if(SignUpActivity.mLeagueName != null && !SignUpActivity.mLeagueName.isEmpty()) {
             etLeagueName.setText(SignUpActivity.mLeagueName);
-            etLeagueName.setEnabled(true);
+            nextBtn.setEnabled(true);
         }
 
         etLeagueName.requestFocus();
@@ -69,8 +67,6 @@ public class SignInLeagueNameFragment extends Fragment {
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-
-                Log.e("Intent", INTENT);
 
                 if(INTENT.equals(Constants.SIGNIN_FRAGMENT)){
                     SignInActivity.mLeagueName = leagueName;

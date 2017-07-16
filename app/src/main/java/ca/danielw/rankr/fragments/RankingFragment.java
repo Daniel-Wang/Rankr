@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.CreateGameActivity;
@@ -73,22 +74,17 @@ public class RankingFragment extends Fragment{
 
         // Get the rankings
         mLeagueName = ((MainActivity)getActivity()).getmLeagueName();
-        Log.e("Ranking Fragment", mLeagueName);
+
 
         mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.e("Data changed", "Hello");
 
                         List<String> gameList = new ArrayList<>();
 
                         //Get each game
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                            Log.e("Ranking frag", snapshot.getKey());
-                            Log.e("Ranking frag", String.valueOf(snapshot.exists()));
-                            Log.e("Ranking frag", String.valueOf(snapshot.getChildrenCount()));
-                            Log.e("Ranking frag", String.valueOf(snapshot.getChildren()));
 
                             LeagueModel leagueModel = new LeagueModel();
                             ArrayList<RankingModel> rankings = leagueModel.getmRankings();
@@ -98,10 +94,9 @@ public class RankingFragment extends Fragment{
 
                             //Get all the members and their ranking Models
                             for(DataSnapshot members: snapshot.getChildren()){
-                                Log.e("Ranking frag", members.getKey());
-
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
 
+                                rankingModel.setId(members.getKey());
                                 rankings.add(rankingModel);
                             }
 
@@ -109,10 +104,16 @@ public class RankingFragment extends Fragment{
                             sortRanks(rankings);
 
                             //Add the ranking
+                            Map<String, Object> childUpdates = new HashMap<>();
                             int size = rankings.size();
                             for(int i = 0; i < size; i++){
-                                rankings.get(i).setRank(i+1);
+                                RankingModel rank = rankings.get(i);
+                                rank.setRank(i+1);
+                                childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" +
+                                        leagueModel.getmLeaguename() + "/" + rank.getId() + "/" + Constants.RANK, i+1);
                             }
+
+                            mDatabase.updateChildren(childUpdates);
 
                             //Add the game to the collection of games
                             leagues.add(leagueModel);
@@ -136,7 +137,6 @@ public class RankingFragment extends Fragment{
 
                             }
                         });
-
                         refreshList(rvRankings);
                     }
 
@@ -145,8 +145,6 @@ public class RankingFragment extends Fragment{
 
                     }
                 });
-
-        // Calculate the position differential from the previous day
 
         return view;
     }

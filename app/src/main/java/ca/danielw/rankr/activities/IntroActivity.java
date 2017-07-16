@@ -18,7 +18,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private Button btnSignIn;
     private Button btnCreateLeague;
-    private Button btnSignUp;
+//    private Button btnSignUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class IntroActivity extends AppCompatActivity {
 
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         btnCreateLeague = (Button) findViewById(R.id.btnCreateLeague);
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
+//        btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
         if (currentUser != null) {
             //Open to leaderboard
@@ -56,13 +56,13 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IntroActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
+//        btnSignUp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(IntroActivity.this, SignUpActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 }

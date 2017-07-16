@@ -13,15 +13,14 @@
         android:padding="40dp"
         android:textSize="30dp"
         android:gravity="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/colorPrimaryDark"/>
 
     <ImageView
         android:layout_below="@id/tvTitle"
         android:id="@+id/intro_image_1"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/rankr_logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="40dp"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_below="@id/intro_image_1"
@@ -33,14 +32,14 @@
         android:textSize="22dp"
         android:gravity="center" />
 
-    <Button
-        android:layout_below="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/btnSignUp"
-        android:text="Sign up from invitation"
-        style="@style/Button.AllCaps"/>
+    <!--<Button-->
+        <!--android:layout_below="@+id/description"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:id="@+id/btnSignUp"-->
+        <!--android:text="Sign up from invitation"-->
+        <!--style="@style/Button.AllCaps"/>-->
 
     <LinearLayout
         android:layout_alignParentBottom="true"

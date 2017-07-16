@@ -149,17 +149,17 @@ class InviteActivity : Activity() {
     private fun sendEmails(mutableList: MutableList<String?>){
         val configuration = Configuration()
                 .domain(Constants.DOMAIN_NAME)
-                .apiKey(Constants.API_KEY)
+                .apiKey(getString(R.string.mailgun_api_key))
                 .from("Rankr", Constants.FROM_DOMAIN)
 
         val body = Body.builder()
                 .h3("Join " + mLeagueName + " on Rankr")
-                .p(mEmail + " has invited you to join the Rankr league <b>" + mLeagueName + "</b>.")
+                .p(mEmail + " has invited you to join the Rankr league " + mLeagueName + ".")
                 .link("http://play.google.com/store/apps/details?id=" + Constants.PACKAGE_NAME, "Download the App")
                 .br()
                 .link("www.danielw.ca/rankr/signup?" + Constants.NODE_LEAGUE + "=" + mLeagueName, "Join Now")
                 .br()
-                .p("Make by the Rankr team (Daniel Wang)")
+                .p("Made by the Rankr team (Daniel Wang)")
                 .p("Toronto, ON")
                 .build()
 
