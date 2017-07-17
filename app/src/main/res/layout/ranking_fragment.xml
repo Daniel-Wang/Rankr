@@ -40,6 +40,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llRankingHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -75,6 +76,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/tvNoGames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No active games. Create a game to start ranking!"
+            android:padding="28dp"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:visibility="gone"/>
 
     </LinearLayout>
 </ScrollView>

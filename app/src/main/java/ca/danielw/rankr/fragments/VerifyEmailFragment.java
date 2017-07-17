@@ -21,8 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -88,42 +91,59 @@ public class VerifyEmailFragment extends Fragment {
                             //Create the user in the database
 
                             if(user != null && user.isEmailVerified()) {
-                                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPref.edit();
-                                editor.putString(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
-                                editor.apply();
+                                userId = user.getUid();
 
-                                UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail,
-                                        CreateLeagueActivity.mLeagueName);
+                                mDatabase.child(Constants.NODE_LEAGUES).child(CreateLeagueActivity.mLeagueName)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if(dataSnapshot.exists()) {
+                                                    Toast.makeText(getActivity(), "That league name is already used. Go back to change it.",
+                                                            Toast.LENGTH_LONG).show();
+                                                    CreateLeagueActivity.isVerified = true;
+                                                } else {
 
-                                Map<String, Object> userValues = userModel.toMap();
+                                                    SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                                                    editor.apply();
 
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
-                                childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName + "/"
-                                        + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
+                                                    UserModel userModel = new UserModel(CreateLeagueActivity.mUsername, CreateLeagueActivity.mEmail,
+                                                            CreateLeagueActivity.mLeagueName);
 
-                                mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("Update failed", e.getMessage());
-                                        Toast.makeText(getActivity(), "That league name is already used.",
-                                                Toast.LENGTH_LONG).show();
-                                        CreateLeagueActivity.isVerified = true;
-                                    }
-                                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        // Start the invite activity
-                                        Activity activity = getActivity();
-                                        Intent intent = new Intent(activity, InviteActivity.class);
-                                        intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
-                                        intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
+                                                    Map<String, Object> userValues = userModel.toMap();
 
-                                        startActivity(intent);
-                                        activity.finish();
-                                    }
-                                });
+                                                    Map<String, Object> childUpdates = new HashMap<>();
+                                                    childUpdates.put(Constants.NODE_USERS + "/" + userId, userValues);
+                                                    childUpdates.put(Constants.NODE_LEAGUES + "/" + CreateLeagueActivity.mLeagueName + "/"
+                                                            + "/" + Constants.NODE_MEMBERS + "/" + userId, userModel.getUsername());
+
+                                                    mDatabase.updateChildren(childUpdates).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.e("Update failed", e.getMessage() + " " + CreateLeagueActivity.mLeagueName );
+                                                        }
+                                                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            // Start the invite activity
+                                                            Activity activity = getActivity();
+                                                            Intent intent = new Intent(activity, InviteActivity.class);
+                                                            intent.putExtra(Constants.LEAGUE_NAME, CreateLeagueActivity.mLeagueName);
+                                                            intent.putExtra(Constants.EMAIL, CreateLeagueActivity.mEmail);
+
+                                                            startActivity(intent);
+                                                            activity.finish();
+                                                        }
+                                                    });
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
                             }
 
                         } else {

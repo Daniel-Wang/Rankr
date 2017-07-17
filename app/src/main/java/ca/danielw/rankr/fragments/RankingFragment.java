@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,9 @@ import ca.danielw.rankr.utils.Constants;
 
 public class RankingFragment extends Fragment{
 
+    private TextView mNoGames;
+    private LinearLayout mRankingHeader;
+
     private DatabaseReference mDatabase;
 
     private Spinner mGameSpinner;
@@ -58,9 +63,12 @@ public class RankingFragment extends Fragment{
 		/* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.ranking_fragment, container, false);
 
+        mNoGames = (TextView) view.findViewById(R.id.tvNoGames);
         rvRankings = (RecyclerView) view.findViewById(R.id.rvRankings);
         mCreateButton = (Button) view.findViewById(R.id.btnCreateGame);
         mGameSpinner = (Spinner) view.findViewById(R.id.spGame);
+
+        mRankingHeader = (LinearLayout) view.findViewById(R.id.llRankingHeader);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -137,7 +145,18 @@ public class RankingFragment extends Fragment{
 
                             }
                         });
-                        refreshList(rvRankings);
+                        if(!leagues.isEmpty()) {
+                            rvRankings.setVisibility(View.VISIBLE);
+                            mNoGames.setVisibility(View.GONE);
+                            mRankingHeader.setVisibility(View.VISIBLE);
+                            mGameSpinner.setVisibility(View.VISIBLE);
+                            refreshList(rvRankings);
+                        } else {
+                            mGameSpinner.setVisibility(View.INVISIBLE);
+                            rvRankings.setVisibility(View.GONE);
+                            mNoGames.setVisibility(View.VISIBLE);
+                            mRankingHeader.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
