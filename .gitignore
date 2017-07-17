@@ -10,3 +10,4 @@
 .firebaserc
 firebase.json
 functions/
+app/app-release.apk
