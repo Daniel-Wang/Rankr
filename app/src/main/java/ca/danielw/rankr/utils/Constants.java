@@ -53,6 +53,10 @@ public final class Constants {
     public static final String CURRENT_GAME = "CURRENT_GAME";
     public static final String FRAGMENT_RANKING = "FRAGMENT_RANKING";
 
+    public static final String SEND_EMAIL_ENDPOINT = "https://us-central1-rankr-2d74f.cloudfunctions.net/send_emails";
+
+    public static final String EMAILS = "emails";
+
     private Constants(){
         throw new AssertionError();
     }

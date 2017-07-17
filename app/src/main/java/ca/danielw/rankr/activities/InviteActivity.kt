@@ -2,7 +2,6 @@ package ca.danielw.rankr.activities
 
 import android.app.Activity
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,9 +12,13 @@ import android.widget.TextView
 import ca.danielw.rankr.R
 import ca.danielw.rankr.fragments.EmailFragment
 import ca.danielw.rankr.utils.Constants
-import net.sargue.mailgun.Configuration
-import net.sargue.mailgun.Mail
-import net.sargue.mailgun.content.Body
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class InviteActivity : Activity() {
@@ -147,39 +150,30 @@ class InviteActivity : Activity() {
     }
 
     private fun sendEmails(mutableList: MutableList<String?>){
-        val configuration = Configuration()
-                .domain(Constants.DOMAIN_NAME)
-                .apiKey(getString(R.string.mailgun_api_key))
-                .from("Rankr", Constants.FROM_DOMAIN)
 
-        val body = Body.builder()
-                .h3("Join " + mLeagueName + " on Rankr")
-                .p(mEmail + " has invited you to join the Rankr league " + mLeagueName + ".")
-                .link("http://play.google.com/store/apps/details?id=" + Constants.PACKAGE_NAME, "Download the App")
-                .br()
-                .link("www.danielw.ca/rankr/signup?" + Constants.NODE_LEAGUE + "=" + mLeagueName, "Join Now")
-                .br()
-                .p("Made by the Rankr team (Daniel Wang)")
-                .p("Toronto, ON")
-                .build()
+        val queue = Volley.newRequestQueue(this)
+        val url = Constants.SEND_EMAIL_ENDPOINT
 
-        for (item in mutableList){
-            if (item != null) {
-                SendEmailTask(configuration, item, body).execute()
-            }
+        val jsonBody = JSONObject()
+
+        val emailList = JSONArray()
+
+        mutableList.forEach {
+            val emailJson = JSONObject()
+            emailJson.put(it, true)
+            emailList.put(emailJson)
         }
-    }
 
-    private class SendEmailTask (val configuration: Configuration, val item: String, val body: Body): AsyncTask<Unit, Unit, Unit>(){
+        jsonBody.put(Constants.EMAILS, emailList)
+        jsonBody.put(Constants.NODE_LEAGUE, mLeagueName)
+        jsonBody.put("userEmail", mEmail)
 
-        override fun doInBackground(vararg params: Unit?) {
-            Mail.using(configuration)
-                    .to(item)
-                    .subject("You've been invited to join a Rankr League")
-                    .content(body)
-                    .build()
-                    .send()
-        }
+        // Request a string response from the provided URL.
+        val stringRequest = JsonObjectRequest(url, jsonBody,
+                Response.Listener<JSONObject> { }, Response.ErrorListener { })
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest)
     }
 
     override fun onBackPressed() {
