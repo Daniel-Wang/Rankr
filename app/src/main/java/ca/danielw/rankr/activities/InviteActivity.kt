@@ -12,10 +12,8 @@ import android.widget.TextView
 import ca.danielw.rankr.R
 import ca.danielw.rankr.fragments.EmailFragment
 import ca.danielw.rankr.utils.Constants
-import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONObject

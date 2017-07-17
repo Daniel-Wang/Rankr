@@ -19,11 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.activities.IntroActivity;
+import ca.danielw.rankr.activities.InviteActivity;
+import ca.danielw.rankr.activities.MainActivity;
 import ca.danielw.rankr.utils.Constants;
 
 public class SettingsFragment extends Fragment{
 
     private TextView mSignOut;
+    private TextView mInviteMembers;
     private TextView mDevWebsite;
 
     @Override
@@ -37,7 +40,18 @@ public class SettingsFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         mSignOut = (TextView) view.findViewById(R.id.tvSignOut);
+        mInviteMembers = (TextView) view.findViewById(R.id.tvInvite);
         mDevWebsite = (TextView) view.findViewById(R.id.tvDevWebsite);
+
+        mInviteMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), InviteActivity.class);
+                intent.putExtra(Constants.LEAGUE_NAME, MainActivity.mLeagueName);
+                intent.putExtra(Constants.EMAIL, MainActivity.mEmail);
+                startActivity(intent);
+            }
+        });
 
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override

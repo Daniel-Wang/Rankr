@@ -28,7 +28,9 @@ import ca.danielw.rankr.utils.Constants;
 public class MainActivity extends AppCompatActivity {
 
     private int mCurrentNav;
-    private String mLeagueName;
+
+    public static String mEmail;
+    public static String mLeagueName;
     public static String mCurrentUserId;
 
     private ViewPager mPager;
@@ -103,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(currentUser != null) {
             mCurrentUserId = currentUser.getUid();
+            mEmail = currentUser.getEmail();
         }
         //Get this user's League and check if a game exists, if not, then start the create game activity
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);

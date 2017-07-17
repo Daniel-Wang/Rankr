@@ -37,6 +37,7 @@ public class SignInLeagueNameFragment extends Fragment {
         etLeagueName = (EditText) view.findViewById(R.id.etLeagueName);
 
         if(SignUpActivity.mLeagueName != null && !SignUpActivity.mLeagueName.isEmpty()) {
+            leagueName = SignUpActivity.mLeagueName;
             etLeagueName.setText(SignUpActivity.mLeagueName);
             nextBtn.setEnabled(true);
         }
