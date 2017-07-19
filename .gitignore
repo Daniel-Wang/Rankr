@@ -11,3 +11,4 @@
 firebase.json
 functions/
 app/app-release.apk
+functions-cron/
