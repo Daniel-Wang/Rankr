@@ -49,8 +49,6 @@ public class RankingFragment extends Fragment{
 
     ArrayList<LeagueModel> leagues = new ArrayList<>();
 
-    private int mCurrentGame = 0;
-
     private String mLeagueName;
 
     private RecyclerView rvRankings;
@@ -136,7 +134,7 @@ public class RankingFragment extends Fragment{
                         mGameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                mCurrentGame = position;
+                                MainActivity.mCurrentGame = position;
                                 refreshList(rvRankings);
                             }
 
@@ -187,7 +185,7 @@ public class RankingFragment extends Fragment{
     }
 
     private void refreshList(RecyclerView rvRankings) {
-        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(mCurrentGame));
+        RankingAdapter adapter = new RankingAdapter(getContext(), leagues.get(MainActivity.mCurrentGame));
 
         rvRankings.setAdapter(adapter);
         rvRankings.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -197,9 +195,5 @@ public class RankingFragment extends Fragment{
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-    }
-
-    public int getCurrentgame() {
-        return mCurrentGame;
     }
 }

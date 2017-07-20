@@ -2,18 +2,16 @@ package ca.danielw.rankr.activities;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 
 import ca.danielw.rankr.R;
-import ca.danielw.rankr.adapters.SlidePagerAdapter;
+import ca.danielw.rankr.fragments.SignInLeagueNameFragment;
 import ca.danielw.rankr.utils.Constants;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    private ViewPager mPager;
-    private SlidePagerAdapter mPagerAdapter;
 
     public static String mEmail;
     public static String mLeagueName;
@@ -26,13 +24,21 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in_up);
 
         Intent intent = getIntent();
-        String action = intent.getAction();
         Uri data = intent.getData();
         mLeagueName = data.getQueryParameter(Constants.NODE_LEAGUE);
 
-        /* Instantiate a ViewPager and a PagerAdapter. */
-        mPager = (android.support.v4.view.ViewPager) findViewById(R.id.vpPager);
-        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SIGNUP_FRAGMENT);
-        mPager.setAdapter(mPagerAdapter);
+        if(savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager()
+                    .beginTransaction();
+
+            Bundle bundle2 = new Bundle();
+            Fragment fragment = new SignInLeagueNameFragment();
+
+            bundle2.putString(Constants.SIGN_IN_INTENT, Constants.SIGNUP_FRAGMENT);
+            fragment.setArguments(bundle2);
+
+            transaction.replace(R.id.root_frame, fragment);
+            transaction.commit();
+        }
     }
 }
