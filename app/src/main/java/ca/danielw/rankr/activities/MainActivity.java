@@ -22,16 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.SlidePagerAdapter;
-import ca.danielw.rankr.fragments.RankingFragment;
 import ca.danielw.rankr.utils.Constants;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int mCurrentNav;
+    private BottomNavigationView mBottomNav;
 
     public static String mEmail;
     public static String mLeagueName;
     public static String mCurrentUserId;
+    public static int mCurrentGame = 0;
 
     private ViewPager mPager;
     private SlidePagerAdapter mPagerAdapter;
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    private boolean firstStart = true;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -50,22 +48,18 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mCurrentNav = R.id.navigation_home;
-                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
-                    mPager.setAdapter(mPagerAdapter);
                     mFab.show();
+                    mPager.setCurrentItem(0);
+
                     return true;
                 case R.id.navigation_profile:
-                    mCurrentNav = R.id.navigation_profile;
-                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.PROFILE_FRAGMENT);
-                    mPager.setAdapter(mPagerAdapter);
                     mFab.hide();
+                    mPager.setCurrentItem(1);
+
                     return true;
                 case R.id.navigation_settings:
-                    mCurrentNav = R.id.navigation_settings;
-                    mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.SETTINGS_FRAGMENT);
-                    mPager.setAdapter(mPagerAdapter);
                     mFab.hide();
+                    mPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -83,21 +77,16 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mCurrentNav = R.id.navigation_home;
+        mBottomNav =(BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNav.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(MainActivity.this, EnterGameResultActivity.class);
-                RankingFragment fragment = (RankingFragment) getSupportFragmentManager().findFragmentByTag(Constants.FRAGMENT_RANKING);
-                if(fragment != null) {
-                    intent.putExtra(Constants.CURRENT_GAME, fragment.getCurrentgame());
-                    intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
-                    startActivity(intent);
-                } else {
-                    //Error
-                }
+                intent.putExtra(Constants.CURRENT_GAME, mCurrentGame);
+                intent.putExtra(Constants.LEAGUE_NAME, mLeagueName);
+                startActivity(intent);
             }
         });
 
@@ -141,12 +130,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(){
+        mPager = (ViewPager) findViewById(R.id.vpPager);
+        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager());
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mBottomNav.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        mPager.setAdapter(mPagerAdapter);
+
         mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    setRankingFragment();
-                } else {
+                if (!dataSnapshot.exists()) {
                     Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
                     startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
                 }
@@ -157,24 +165,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!firstStart && mCurrentNav == R.id.navigation_home) {
-            setRankingFragment();
-        } else {
-            firstStart = false;
-        }
-    }
-
-    private void setRankingFragment() {
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        mPager = (ViewPager) findViewById(R.id.vpPager);
-        mPagerAdapter = new SlidePagerAdapter(getSupportFragmentManager(), Constants.HOME_FRAGMENT);
-        mPager.setAdapter(mPagerAdapter);
     }
 }
