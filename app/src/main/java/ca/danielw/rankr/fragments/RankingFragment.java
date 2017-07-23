@@ -37,7 +37,7 @@ import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
 
-public class RankingFragment extends Fragment{
+public class RankingFragment extends Fragment {
 
     private TextView mNoGames;
     private LinearLayout mRankingHeader;
@@ -58,7 +58,7 @@ public class RankingFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-		/* Inflate the layout for this fragment */
+        /* Inflate the layout for this fragment */
         View view = inflater.inflate(R.layout.ranking_fragment, container, false);
 
         mNoGames = (TextView) view.findViewById(R.id.tvNoGames);
@@ -79,8 +79,7 @@ public class RankingFragment extends Fragment{
         });
 
         // Get the rankings
-        mLeagueName = ((MainActivity)getActivity()).getmLeagueName();
-
+        mLeagueName = ((MainActivity) getActivity()).getmLeagueName();
 
         mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName)
                 .addValueEventListener(new ValueEventListener() {
@@ -90,7 +89,7 @@ public class RankingFragment extends Fragment{
                         List<String> gameList = new ArrayList<>();
 
                         //Get each game
-                        for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                             LeagueModel leagueModel = new LeagueModel();
                             ArrayList<RankingModel> rankings = leagueModel.getmRankings();
@@ -99,7 +98,7 @@ public class RankingFragment extends Fragment{
                             gameList.add(leagueModel.getmLeaguename());
 
                             //Get all the members and their ranking Models
-                            for(DataSnapshot members: snapshot.getChildren()){
+                            for (DataSnapshot members : snapshot.getChildren()) {
                                 RankingModel rankingModel = members.getValue(RankingModel.class);
 
                                 rankingModel.setId(members.getKey());
@@ -112,11 +111,11 @@ public class RankingFragment extends Fragment{
                             //Add the ranking
                             Map<String, Object> childUpdates = new HashMap<>();
                             int size = rankings.size();
-                            for(int i = 0; i < size; i++){
+                            for (int i = 0; i < size; i++) {
                                 RankingModel rank = rankings.get(i);
-                                rank.setRank(i+1);
+                                rank.setRank(i + 1);
                                 childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" +
-                                        leagueModel.getmLeaguename() + "/" + rank.getId() + "/" + Constants.RANK, i+1);
+                                        leagueModel.getmLeaguename() + "/" + rank.getId() + "/" + Constants.RANK, i + 1);
                             }
 
                             mDatabase.updateChildren(childUpdates);
@@ -143,7 +142,7 @@ public class RankingFragment extends Fragment{
 
                             }
                         });
-                        if(!leagues.isEmpty()) {
+                        if (!leagues.isEmpty()) {
                             rvRankings.setVisibility(View.VISIBLE);
                             mNoGames.setVisibility(View.GONE);
                             mRankingHeader.setVisibility(View.VISIBLE);
@@ -173,9 +172,9 @@ public class RankingFragment extends Fragment{
                 int ratingA = rankingA.getElo();
                 int ratingB = rankingB.getElo();
 
-                if(ratingA > ratingB) {
+                if (ratingA > ratingB) {
                     return -1;
-                } else if(ratingA < ratingB) {
+                } else if (ratingA < ratingB) {
                     return 1;
                 } else {
                     return 0;

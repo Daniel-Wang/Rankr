@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:id="@+id/llBackground"
+    android:clickable="true"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <com.robinhood.ticker.TickerView
+        android:id="@+id/tkElo"
+        android:textSize="44sp"
+        android:textColor="@color/white"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvQuote"
+        tools:text="veni vidi vici"
+        android:gravity="center"
+        android:textSize="28sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

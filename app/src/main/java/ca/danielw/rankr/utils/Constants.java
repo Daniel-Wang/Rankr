@@ -51,11 +51,14 @@ public final class Constants {
     public static final int RESULT_OK = 200;
 
     public static final String CURRENT_GAME = "CURRENT_GAME";
+    public static final String GAME = "GAME";
     public static final String FRAGMENT_RANKING = "FRAGMENT_RANKING";
 
     public static final String SEND_EMAIL_ENDPOINT = "https://us-central1-rankr-2d74f.cloudfunctions.net/send_emails";
 
     public static final String EMAILS = "emails";
+
+    public static int NUM_QUOTES = 5;
 
     private Constants(){
         throw new AssertionError();

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "504789654859-bf9bds374knmti6ac191l16lc4k0n94n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.danielw.rankr",
+            "certificate_hash": "b79c9cd029976ea6612aa9a71f0e4fa07de05665"
+          }
+        },
+        {
           "client_id": "504789654859-hj8n3lihc4qro5pkrplkd748jg4s1mf5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

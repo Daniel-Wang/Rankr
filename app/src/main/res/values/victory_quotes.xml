@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="victory_quotes">
+
+        <item>Veni Vidi Vici \n- Julius Caesar</item>
+        <item>Never interrupt your enemy when he is making a mistake. \n- Napoleon Bonaparte</item>
+        <item>Float like a butterfly, sting like a bee. \n- Muhammad Ali</item>
+        <item>Know thy self, know thy enemy. A thousand battles, a thousand victories. \n- Sun Tzu</item>
+        <item>Whether in an advantageous position or a disadvantageous one, the opposite state should be always present to your mind. \n- Sun Tzu</item>
+        <item>Winning isn\’t everything, but it beats anything that comes in second. \n- Paul Bryant</item>
+
+    </string-array>
+</resources>

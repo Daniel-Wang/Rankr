@@ -22,4 +22,5 @@
 
     <string name="mailgun_api_key">key-181e8242f9bfaf5d0726ce4770e37963</string>
     <string name="email_summary_text">We suggest using your work email if you\'re create a team for your business, department, or project</string>
+    <string name="create_game">Create Game</string>
 </resources>
