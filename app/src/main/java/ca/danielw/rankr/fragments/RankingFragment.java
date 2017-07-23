@@ -87,6 +87,7 @@ public class RankingFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         List<String> gameList = new ArrayList<>();
+                        leagues.clear();
 
                         //Get each game
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
