@@ -2,8 +2,6 @@ package ca.danielw.rankr.utils;
 
 public final class Constants {
 
-    public static final String PACKAGE_NAME = "ca.danielw.rankr";
-
     public static final String LEAGUE_NAME = "LEAGUE_NAME";
     public static final String EMAIL = "EMAIL";
 
@@ -23,21 +21,11 @@ public final class Constants {
 
     public static final String SIGNUP_FRAGMENT = "SIGNUP_FRAGMENT";
     public static final String SIGNIN_FRAGMENT = "SIGNIN_FRAGMENT";
-    public static final String CREATE_LEAGUE_FRAGMENT = "CREATE_LEAGUE_FRAGMENT";
-    public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
-    public static final String PROFILE_FRAGMENT = "PROFILE_FRAGMENT";
-    public static final String SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
-
-    public static final String SOURCE_LOCATION = "SOURCE_LOCATION";
 
     public static final String SIGN_IN_INTENT = "SIGN_IN_INTENT";
 
     public static final int BASE_RATING = 1200;
 
-    public static final String DOMAIN_NAME = "mail.danielw.ca";
-    public static final String FROM_DOMAIN = "daniel@" + DOMAIN_NAME;
-
-    public static final String ME_USER = "ME_USER";
     public static final String K_FACTOR = "kFactor";
 
     public static final String LOSES = "loses";
@@ -51,11 +39,13 @@ public final class Constants {
     public static final int RESULT_OK = 200;
 
     public static final String CURRENT_GAME = "CURRENT_GAME";
-    public static final String FRAGMENT_RANKING = "FRAGMENT_RANKING";
+    public static final String GAME = "GAME";
 
     public static final String SEND_EMAIL_ENDPOINT = "https://us-central1-rankr-2d74f.cloudfunctions.net/send_emails";
 
     public static final String EMAILS = "emails";
+
+    public static int NUM_QUOTES = 10;
 
     private Constants(){
         throw new AssertionError();

@@ -9,8 +9,8 @@ android {
         applicationId "ca.danielw.rankr"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.5.2"
+        versionCode 9
+        versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -55,7 +55,17 @@ dependencies {
 
     //Networking
     compile 'com.android.volley:volley:1.0.0'
+
+    //Animations
+    compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+        transitive = true;
+    }
+    compile 'com.robinhood.ticker:ticker:1.2.0'
+
 }
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
 }

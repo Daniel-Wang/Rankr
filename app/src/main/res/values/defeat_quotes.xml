@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="defeat_quotes">
+
+        <item>Fall down seven times, get up eight. \n- Old Japanese Proverb</item>
+        <item>I\'ve failed over and over and over again in my life and that is why I succeed. \n- Michael Jordan</item>
+        <item>If they can make penicillin out of mouldy bread, they can sure make something out of you. \n- Muhammad Ali</item>
+        <item>I\'ve got a theory that if you give 100 percent all of the time, somehow things will work out in the end. \n- Larry Bird</item>
+        <item>Experience is the teacher of all things. \n- Julius Caesar</item>
+        <item>Death is nothing, but to live defeated and inglorious is to die daily. \n- Napoleon Bonaparte</item>
+        <item>You can\'t win unless you learn how to lose. \n- Kareem Abdul-Jabbar</item>
+        <item>I have not failed. I\'ve just found 10,000 ways that won\'t work. \n-Thomas A. Edison</item>
+        <item>Failure is the condiment that gives success its flavor. \n-Truman Capote</item>
+        <item>Success is stumbling from failure to failure with no loss of enthusiasm. \n-Winston S. Churchill</item>
+
+    </string-array>
+</resources>

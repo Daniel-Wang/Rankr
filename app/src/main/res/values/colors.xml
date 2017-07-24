@@ -9,7 +9,9 @@
     <color name="light_black">#1B1B1B</color>
 
     <color name="green">#00CC66</color>
+    <color name="green_dark">#26532B</color>
     <color name="red">#EE6352</color>
+    <color name="red_dark">#7C332A</color>
 
     <color name="light_grey">#f9f9f9</color>
     <color name="medium_grey">#d7d7d7</color>

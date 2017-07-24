@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="victory_quotes">
+
+        <item>Veni Vidi Vici \n- Julius Caesar</item>
+        <item>Never interrupt your enemy when he is making a mistake. \n- Napoleon Bonaparte</item>
+        <item>Float like a butterfly, sting like a bee. \n- Muhammad Ali</item>
+        <item>Know thy self, know thy enemy. A thousand battles, a thousand victories. \n- Sun Tzu</item>
+        <item>Whether in an advantageous position or a disadvantageous one, the opposite state should be always present to your mind. \n- Sun Tzu</item>
+        <item>Winning isn\’t everything, but it beats anything that comes in second. \n- Paul Bryant</item>
+        <item>My whole life is about winning. I don\'t lose often. I almost never lose. \n- Donald Trump</item>
+        <item>Success is not final, failure is not fatal: it is the courage to continue that counts. \n-Winston S. Churchill</item>
+        <item>If A is a success in life, then A equals x plus y plus z. Work is x; y is play; and z is keeping your mouth shut \n-Albert Einstein</item>
+        <item>We\'re talking about practice! We\'re talking about practice! We ain\'t here talking about the game! We\'re talking about practice, man! \n- Allen Iverson</item>
+
+    </string-array>
+</resources>

@@ -1,14 +1,16 @@
 package ca.danielw.rankr.activities;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,15 +24,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import ca.danielw.rankr.R;
 import ca.danielw.rankr.adapters.UsernameAdapter;
+import ca.danielw.rankr.fragments.GameResultFragment;
 import ca.danielw.rankr.models.LeagueModel;
 import ca.danielw.rankr.models.RankingModel;
 import ca.danielw.rankr.utils.Constants;
 import ca.danielw.rankr.utils.Elo;
+import io.codetail.animation.ViewAnimationUtils;
 import rx.Observer;
 
 public class EnterGameResultActivity extends AppCompatActivity {
@@ -39,6 +42,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
     private TextView mWin;
     private TextView mLose;
+
     private LinearLayout mBottomBar;
 
     private boolean mResult;
@@ -49,6 +53,7 @@ public class EnterGameResultActivity extends AppCompatActivity {
     private String mLeagueName;
 
     private int mCurrentGame;
+    private int mOrigElo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,36 +74,73 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         getUsersFromDb(rvUsernames);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int height = displayMetrics.heightPixels;
+        final int width = displayMetrics.widthPixels;
+
         mWin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                int cx = (mWin.getLeft() + mWin.getRight()) / 2;
+                int cy = (mWin.getTop() + mWin.getBottom()) / 2;
+
+                // get the final radius for the clipping circle
+                int dx = Math.max(cx, width);
+                int dy = Math.max(cy, height);
+                float finalRadius = (float) Math.hypot(dx, dy);
+
+                // Android native animator
+                mWin.setHeight(height);
+                mWin.setWidth(width);
+                mLose.setVisibility(View.GONE);
+                Animator animator =
+                        ViewAnimationUtils.createCircularReveal(mWin, width, height, 0, finalRadius);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.setDuration(800);
+                animator.start();
+
                 mResult = true;
                 mCurrentUser.setWins(mCurrentUser.getWins() + 1);
                 mOpponent.setLoses(mOpponent.getLoses() + 1);
 
-                Log.e("Current", String.valueOf(mCurrentUser.getkFactor()));
-                Log.e("Opponent", String.valueOf(mOpponent.getkFactor()));
-
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
-                //Show animation
-                sendEndResultIntent();
-                finish();
+
+                startGameResultFragment(true);
             }
         });
 
         mLose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int cx = (mLose.getLeft() + mLose.getRight()) / 2;
+                int cy = (mLose.getTop() + mLose.getBottom()) / 2;
+
+                // get the final radius for the clipping circle
+                int dx = Math.max(cx, width);
+                int dy = Math.max(cy, height);
+                float finalRadius = (float) Math.hypot(dx, dy);
+
+                // Android native animator
+                mLose.setHeight(height);
+                mLose.setWidth(width);
+                mWin.setVisibility(View.GONE);
+                Animator animator =
+                        ViewAnimationUtils.createCircularReveal(mLose, 0, height, 0, finalRadius);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.setDuration(800);
+                animator.start();
+
                 mResult = false;
                 mOpponent.setWins(mOpponent.getWins() + 1);
                 mCurrentUser.setLoses(mCurrentUser.getLoses() + 1);
 
                 Elo.calculateElo(mCurrentUser, mOpponent, mResult);
                 updateRankings();
-                //Show animation
-                sendEndResultIntent();
-                finish();
+
+                startGameResultFragment(false);
             }
         });
     }
@@ -114,10 +156,6 @@ public class EnterGameResultActivity extends AppCompatActivity {
                         //Get each game
                         for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                             if(mCurrentGame == gameNum) {
-                                Log.e("Ranking frag", snapshot.getKey());
-                                Log.e("Ranking frag", String.valueOf(snapshot.exists()));
-                                Log.e("Ranking frag", String.valueOf(snapshot.getChildrenCount()));
-                                Log.e("Ranking frag", String.valueOf(snapshot.getChildren()));
 
                                 LeagueModel leagueModel = new LeagueModel();
                                 ArrayList<RankingModel> rankings = leagueModel.getmRankings();
@@ -126,13 +164,13 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
                                 //Get all the members and their ranking Models
                                 for (DataSnapshot members : snapshot.getChildren()) {
-                                    Log.e("Ranking frag", members.getKey());
 
                                     RankingModel rankingModel = members.getValue(RankingModel.class);
 
                                     rankingModel.setId(members.getKey());
                                     if (user.getUid().equals(members.getKey())) {
                                         mCurrentUser = rankingModel;
+                                        mOrigElo = mCurrentUser.getElo();
                                     } else {
                                         rankings.add(rankingModel);
                                     }
@@ -184,17 +222,11 @@ public class EnterGameResultActivity extends AppCompatActivity {
 
         String oppUserId = mOpponent.getId();
 
-        Log.e("Current user k factor", String.valueOf(mCurrentUser.getkFactor()));
-        Log.e("Opponent k factor", String.valueOf(mOpponent.getkFactor()));
-
         mCurrentUser.setId(null);
         mOpponent.setId(null);
 
         kFactorUpdate(mCurrentUser);
         kFactorUpdate(mOpponent);
-
-        Log.e("Current user", String.valueOf(mCurrentUser.getElo()));
-        Log.e("Opponent", String.valueOf(mOpponent.getElo()));
 
         Map<String, Object> childUpdates = new HashMap<>();
 
@@ -219,8 +251,17 @@ public class EnterGameResultActivity extends AppCompatActivity {
         }
     }
 
-    private void sendEndResultIntent() {
-        Intent returnIntent = new Intent();
-        setResult(Constants.RESULT_OK,returnIntent);
+    private void startGameResultFragment(final boolean isWin) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentTransaction transaction = getSupportFragmentManager()
+                        .beginTransaction();
+
+                transaction.replace(R.id.rlBackground, GameResultFragment.newInstance(mOrigElo, mCurrentUser.getElo(), isWin));
+                transaction.commit();
+            }
+        }, 800);
     }
 }
