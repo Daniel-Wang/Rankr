@@ -9,6 +9,7 @@
 .externalNativeBuild
 .firebaserc
 firebase.json
+google-services.json
 functions/
 app/app-release.apk
 functions-cron/
