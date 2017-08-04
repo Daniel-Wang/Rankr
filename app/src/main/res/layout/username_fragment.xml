@@ -13,8 +13,7 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:focusableInTouchMode="true">
+        android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="100dp"
@@ -28,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Username"
+                android:maxLength="12"
                 android:inputType="text"
                 style="@style/EditText.Flow"/>
 
@@ -39,7 +39,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:textColor="@color/white"
             android:textSize="16sp"
-            android:text="Username cannot be longer than 20 characters and can only contain letters and numbers."/>
+            android:text="Username cannot be longer than 12 characters and can only contain letters and numbers."/>
 
     </LinearLayout>
 

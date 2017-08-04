@@ -81,9 +81,13 @@ public class UsernameFragment extends Fragment{
 
             @Override
             public void afterTextChanged(Editable s) {
-                nextBtn.setEnabled(true);
-
                 username = etUsername.getText().toString();
+
+                if (username.isEmpty()){
+                    nextBtn.setEnabled(false);
+                } else {
+                    nextBtn.setEnabled(true);
+                }
             }
         });
 

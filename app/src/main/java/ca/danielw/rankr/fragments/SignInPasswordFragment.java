@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -46,6 +47,8 @@ public class SignInPasswordFragment extends Fragment{
 
         nextBtn = (Button) view.findViewById(R.id.btnNext);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
+        final TextInputLayout textInputLayout = (TextInputLayout) view.findViewById(R.id.text_input_layout);
+
 
         etPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -60,8 +63,15 @@ public class SignInPasswordFragment extends Fragment{
 
             @Override
             public void afterTextChanged(Editable s) {
-                nextBtn.setEnabled(true);
                 password = etPassword.getText().toString();
+
+                if (password.isEmpty() || password.length() < 6) {
+                    nextBtn.setEnabled(false);
+
+                    textInputLayout.setError(getString(R.string.pass_length_warning));
+                } else {
+                    nextBtn.setEnabled(true);
+                }
             }
         });
 

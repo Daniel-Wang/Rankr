@@ -57,8 +57,13 @@ public class SignInLeagueNameFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                nextBtn.setEnabled(true);
                 leagueName = etLeagueName.getText().toString();
+
+                if (leagueName.isEmpty()) {
+                    nextBtn.setEnabled(false);
+                } else {
+                    nextBtn.setEnabled(true);
+                }
             }
         });
 

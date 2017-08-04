@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
+                android:maxLength="20"
                 style="@style/EditText.Flow"/>
 
         </android.support.design.widget.TextInputLayout>

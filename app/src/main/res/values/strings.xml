@@ -13,14 +13,14 @@
     <string name="title_activity_intro">IntroActivity</string>
     <string name="hint_email">Email address</string>
     <string name="next_text">Next</string>
-    <string name="create_league_name_text">Name your rankr league</string>
+    <string name="create_league_name_text">Name your Rankr league</string>
     <string name="create_league_summary_text">We\'ll use this to name your Rankr league. You won\'t be able to change this later.</string>
     <string name="add_an_email_hint">Add an email</string>
     <string name="win">Win</string>
     <string name="lose">Lose</string>
     <string name="select_opponent">Select Your Opponent</string>
 
-    <string name="mailgun_api_key">key-181e8242f9bfaf5d0726ce4770e37963</string>
     <string name="email_summary_text">We suggest using your work email if you\'re create a team for your business, department, or project</string>
     <string name="create_game">Create Game</string>
+    <string name="pass_length_warning">Password must be 6 characters</string>
 </resources>

@@ -64,7 +64,11 @@ public class LeagueNameFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 leagueName = etLeagueName.getText().toString();
 
-                nextBtn.setEnabled(true);
+                if (leagueName.isEmpty()){
+                    nextBtn.setEnabled(false);
+                } else {
+                    nextBtn.setEnabled(true);
+                }
             }
         });
 

@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:focusableInTouchMode="true"
         android:layout_centerInParent="true">
 
         <android.support.design.widget.TextInputLayout
@@ -30,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
+                android:maxLength="20"
                 style="@style/EditText.Flow"/>
 
         </android.support.design.widget.TextInputLayout>
