@@ -123,6 +123,10 @@ public class PasswordFragment extends Fragment {
     }
 
     private void createUser() {
+        SignUpActivity.mLeagueName = SignUpActivity.mLeagueName.trim();
+        SignUpActivity.mEmail = SignUpActivity.mEmail.trim();
+        SignUpActivity.mUsername = SignUpActivity.mUsername.trim();
+
         mAuth.createUserWithEmailAndPassword(SignUpActivity.mEmail, SignUpActivity.mPassword)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,87 +82,91 @@ public class RankingFragment extends Fragment {
         // Get the rankings
         mLeagueName = ((MainActivity) getActivity()).getmLeagueName();
 
-        mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+        if (mLeagueName != null && !mLeagueName.isEmpty()) {
+            mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        List<String> gameList = new ArrayList<>();
-                        leagues.clear();
+                            List<String> gameList = new ArrayList<>();
+                            leagues.clear();
 
-                        //Get each game
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            //Get each game
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                            LeagueModel leagueModel = new LeagueModel();
-                            ArrayList<RankingModel> rankings = leagueModel.getmRankings();
+                                LeagueModel leagueModel = new LeagueModel();
+                                ArrayList<RankingModel> rankings = leagueModel.getmRankings();
 
-                            leagueModel.setmLeaguename(snapshot.getKey());
-                            gameList.add(leagueModel.getmLeaguename());
+                                leagueModel.setmLeaguename(snapshot.getKey());
+                                gameList.add(leagueModel.getmLeaguename());
 
-                            //Get all the members and their ranking Models
-                            for (DataSnapshot members : snapshot.getChildren()) {
-                                RankingModel rankingModel = members.getValue(RankingModel.class);
+                                //Get all the members and their ranking Models
+                                for (DataSnapshot members : snapshot.getChildren()) {
+                                    RankingModel rankingModel = members.getValue(RankingModel.class);
 
-                                rankingModel.setId(members.getKey());
-                                rankings.add(rankingModel);
+                                    rankingModel.setId(members.getKey());
+                                    rankings.add(rankingModel);
+                                }
+
+                                //Sort the rankings by elo
+                                sortRanks(rankings);
+
+                                //Add the ranking
+                                Map<String, Object> childUpdates = new HashMap<>();
+                                int size = rankings.size();
+                                for (int i = 0; i < size; i++) {
+                                    RankingModel rank = rankings.get(i);
+                                    rank.setRank(i + 1);
+                                    childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" +
+                                            leagueModel.getmLeaguename() + "/" + rank.getId() + "/" + Constants.RANK, i + 1);
+                                }
+
+                                mDatabase.updateChildren(childUpdates);
+
+                                //Add the game to the collection of games
+                                leagues.add(leagueModel);
                             }
 
-                            //Sort the rankings by elo
-                            sortRanks(rankings);
+                            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
+                                    R.layout.game_spinner_item, gameList);
+                            spinnerAdapter.setDropDownViewResource(R.layout.game_spinner_dropdown_item);
 
-                            //Add the ranking
-                            Map<String, Object> childUpdates = new HashMap<>();
-                            int size = rankings.size();
-                            for (int i = 0; i < size; i++) {
-                                RankingModel rank = rankings.get(i);
-                                rank.setRank(i + 1);
-                                childUpdates.put(Constants.NODE_RANKINGS + "/" + mLeagueName + "/" +
-                                        leagueModel.getmLeaguename() + "/" + rank.getId() + "/" + Constants.RANK, i + 1);
-                            }
+                            mGameSpinner.setAdapter(spinnerAdapter);
 
-                            mDatabase.updateChildren(childUpdates);
+                            mGameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    MainActivity.mCurrentGame = position;
+                                    refreshList(rvRankings);
+                                }
 
-                            //Add the game to the collection of games
-                            leagues.add(leagueModel);
-                        }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
 
-                        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
-                                R.layout.game_spinner_item, gameList);
-                        spinnerAdapter.setDropDownViewResource(R.layout.game_spinner_dropdown_item);
-
-                        mGameSpinner.setAdapter(spinnerAdapter);
-
-                        mGameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                MainActivity.mCurrentGame = position;
+                                }
+                            });
+                            if (!leagues.isEmpty()) {
+                                rvRankings.setVisibility(View.VISIBLE);
+                                mNoGames.setVisibility(View.GONE);
+                                mRankingHeader.setVisibility(View.VISIBLE);
+                                mGameSpinner.setVisibility(View.VISIBLE);
                                 refreshList(rvRankings);
+                            } else {
+                                mGameSpinner.setVisibility(View.INVISIBLE);
+                                rvRankings.setVisibility(View.GONE);
+                                mNoGames.setVisibility(View.VISIBLE);
+                                mRankingHeader.setVisibility(View.INVISIBLE);
                             }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
-                        if (!leagues.isEmpty()) {
-                            rvRankings.setVisibility(View.VISIBLE);
-                            mNoGames.setVisibility(View.GONE);
-                            mRankingHeader.setVisibility(View.VISIBLE);
-                            mGameSpinner.setVisibility(View.VISIBLE);
-                            refreshList(rvRankings);
-                        } else {
-                            mGameSpinner.setVisibility(View.INVISIBLE);
-                            rvRankings.setVisibility(View.GONE);
-                            mNoGames.setVisibility(View.VISIBLE);
-                            mRankingHeader.setVisibility(View.INVISIBLE);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "Error occured, please restart the app", Toast.LENGTH_LONG).show();
+        }
 
         return view;
     }

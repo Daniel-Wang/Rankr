@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -151,19 +152,23 @@ public class MainActivity extends AppCompatActivity {
 
         mPager.setAdapter(mPagerAdapter);
 
-        mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
-                    startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
+        if (mLeagueName != null && !mLeagueName.isEmpty()) {
+            mDatabase.child(Constants.NODE_RANKINGS).child(mLeagueName).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.exists()) {
+                        Intent intent = new Intent(MainActivity.this, CreateGameActivity.class);
+                        startActivityForResult(intent, Constants.ENTER_GAME_RESULT);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(this, "Error occured, please restart the app", Toast.LENGTH_LONG).show();
+        }
     }
 }

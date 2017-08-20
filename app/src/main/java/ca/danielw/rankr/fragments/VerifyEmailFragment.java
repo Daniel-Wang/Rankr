@@ -69,6 +69,10 @@ public class VerifyEmailFragment extends Fragment {
             }
         });
 
+        CreateLeagueActivity.mEmail = CreateLeagueActivity.mEmail.trim();
+        CreateLeagueActivity.mLeagueName = CreateLeagueActivity.mLeagueName.trim();
+        CreateLeagueActivity.mUsername = CreateLeagueActivity.mUsername.trim();
+
         if (!CreateLeagueActivity.isVerified) {
             createUser();
         } else {
