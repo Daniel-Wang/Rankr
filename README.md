@@ -12,4 +12,4 @@ Groups can form a league, where specific games can be created within (such as Pi
 
 With Rankr, we hope that you and your squad can finally figure out who the best player of each game is. Whether it is Foosball, Ping Pong, Pool, Beer Pong, or anything you, your friends, or colleagues can come up with.
 
-If you have any questions, comments, suggestions, please send them to my email at <danielw68@gmail.com>!
+If you have any questions, comments, suggestions, please send them to my email at danielw68@gmail.com!
