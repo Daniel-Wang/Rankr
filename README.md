@@ -3,7 +3,7 @@ Rankr is an Android app that lets you compete in a leaderboard with your friends
 
 Rankings are established by the Elo Ranking System. 
 
-[Play Store](https://play.google.com/store/apps/details?id=ca.danielw.rankr&hl=en) listing.
+[Play Store](https://play.google.com/store/apps/details?id=ca.danielw.rankr&hl=en) listing. This app is no longer maintained so I took it off the playstore
 
 Rankr brings offices, small groups, and communities together through casual 
 competition. 
